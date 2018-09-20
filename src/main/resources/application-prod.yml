@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://111.230.46.97:3306/yxmall_platform?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
-    username: root
-    password: root
+    username: yxmall_platform
+    password: 123456
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       minimum-idle: 5
@@ -13,6 +13,7 @@ spring:
       pool-name: DatebookHikariCP
       max-lifetime: 1800000
       connection-test-query: SELECT 1 FROM DUAL
+
 
 
 
