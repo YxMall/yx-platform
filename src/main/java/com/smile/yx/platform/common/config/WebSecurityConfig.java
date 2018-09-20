@@ -1,22 +1,20 @@
 package com.smile.yx.platform.common.config;
 
-import com.smile.yx.platform.common.security.JsonAuthenticationFilter;
+import com.smile.yx.platform.common.security.JWTAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsUtils;
 
 /**
  * @description: SpringSecurity配置类
@@ -25,6 +23,7 @@ import org.springframework.web.cors.CorsUtils;
  **/
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -39,72 +38,47 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("smileAuthenticationFailureHandler")
     private AuthenticationFailureHandler smileAuthenticationFailureHandler;
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                //允许所有用户访问
-//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-//                .antMatchers("/authentication/require", "/authentication/form").permitAll()
-//                //其他地址的访问均需验证权限
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                //指定登录页是"/login"
-//                .loginPage("/authentication/require")
-//                //登录提交的地址
-//                .loginProcessingUrl("/authentication/form")
-//                //登录成功的处理
-//                .successHandler(smileAuthenticationSuccessHandler)
-//                .failureHandler(smileAuthenticationFailureHandler)
-//                .permitAll()
-//                .and()
-//                .logout()
-//                //退出登录后的默认url是"/home"
-//                .logoutSuccessUrl("/home")
-//                .permitAll()
-//                .and().csrf().disable();
-//
-//    }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry
-                = http.authorizeRequests();
-        registry.requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
-        http.formLogin()
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http
+                .authorizeRequests();
+        registry.and()
+                //表单登录方式
+                .formLogin()
                 .loginPage("/authentication/require")
+                //登录请求url
                 .loginProcessingUrl("/authentication/form")
+                .permitAll()
+                //成功处理类
                 .successHandler(smileAuthenticationSuccessHandler)
+                //失败
                 .failureHandler(smileAuthenticationFailureHandler)
                 .and()
+                //允许网页iframe
+                .headers().frameOptions().disable()
+                .and()
+                .logout()
+                .permitAll()
+                .and()
                 .authorizeRequests()
-                .antMatchers("/authentication/require","/code/image.jpg", "/authentication/form").permitAll()
+                //任何请求
                 .anyRequest()
+                //需要身份认证
                 .authenticated()
                 .and()
-                .headers()
-                .frameOptions()
-                .disable()
+                //关闭跨站请求防护
+                .csrf().disable()
+                //前后端分离采用JWT 不需要session
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .cors()
-                .and()
-                .csrf().disable();
-        http.addFilterAt(jsonAuthenticationFilter(),
-                UsernamePasswordAuthenticationFilter.class);
-    }
-
-
-    //注册自定义的UsernamePasswordAuthenticationFilter
-    @Bean
-    JsonAuthenticationFilter jsonAuthenticationFilter() throws Exception {
-        JsonAuthenticationFilter filter = new JsonAuthenticationFilter();
-        filter.setAuthenticationSuccessHandler(smileAuthenticationSuccessHandler);
-        filter.setAuthenticationFailureHandler(smileAuthenticationFailureHandler);
-        filter.setFilterProcessesUrl("/authentication/form");
-        //这句很关键，重用WebSecurityConfigurerAdapter配置的AuthenticationManager，不然要自己组装AuthenticationManager
-        filter.setAuthenticationManager(authenticationManagerBean());
-        return filter;
+                //自定义权限拒绝处理类
+//                .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+//                .and()
+                //添加自定义权限过滤器
+//                .addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class)
+                //添加JWT过滤器 除/xboot/login其它请求都需经过此过滤器
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()));
     }
 
 }

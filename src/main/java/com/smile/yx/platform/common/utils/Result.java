@@ -13,7 +13,7 @@ public class Result extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
     public Result() {
-        put("code", 0);
+        put("code", 200);
         put("msg", "success");
     }
 
@@ -42,6 +42,14 @@ public class Result extends HashMap<String, Object> {
     public static Result success(Map<String, Object> map) {
         Result r = new Result();
         r.putAll(map);
+        return r;
+    }
+
+    public static Result success(String msg, Object obj) {
+        Result r = new Result();
+        r.put("code", 200);
+        r.put("msg", msg);
+        r.put("data", obj);
         return r;
     }
 

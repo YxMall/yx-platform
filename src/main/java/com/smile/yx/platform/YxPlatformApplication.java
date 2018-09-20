@@ -14,7 +14,7 @@ import org.springframework.web.filter.CorsFilter;
  * @author qing.wang.o
  */
 @SpringBootApplication
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+
 
 public class YxPlatformApplication {
 

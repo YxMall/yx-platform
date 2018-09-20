@@ -104,6 +104,13 @@
             <artifactId>jmockdata</artifactId>
             <version>3.1.0</version>
         </dependency>
+
+        <!--jwt-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.7.0</version>
+        </dependency>
     </dependencies>
 
     <build>
