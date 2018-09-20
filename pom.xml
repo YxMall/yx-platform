@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.smile</groupId>
-    <artifactId>yxmall_platform</artifactId>
+    <artifactId>yx-platform</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>yxmall_platform</name>
+    <name>yx-platform</name>
     <description>YxMall管理平台</description>
 
     <parent>
