@@ -1,5 +1,7 @@
 package com.smile.yx.platform.common.security;
 
+import com.smile.yx.platform.common.utils.ResponseUtil;
+import com.smile.yx.platform.common.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,8 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+
 /**
- * @author Exrickx
+ * 登录失败处理类
+ * @author smile
  */
 @Slf4j
 @Component
@@ -27,10 +31,15 @@ public class AuthenticationFailHandler extends SimpleUrlAuthenticationFailureHan
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-
-        log.info(e.getMessage());
-
-
+        if (e instanceof  UsernameNotFoundException ){
+            ResponseUtil.out(response,Result.error("用户名不存在"));
+        }else if (e instanceof  BadCredentialsException){
+            ResponseUtil.out(response,Result.error("用户名或密码错误"));
+        }else if (e instanceof DisabledException){
+            ResponseUtil.out(response,Result.error("用户已被禁用"));
+        }else{
+            ResponseUtil.out(response,Result.error());
+        }
     }
 
 

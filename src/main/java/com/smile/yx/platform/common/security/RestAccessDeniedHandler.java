@@ -1,6 +1,7 @@
 package com.smile.yx.platform.common.security;
 
 
+import com.smile.yx.platform.common.emuns.ResponseStatusEnum;
 import com.smile.yx.platform.common.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author Exrickx
+ * @author smile
  */
 @Component
 @Slf4j
@@ -22,8 +23,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
             throws IOException, ServletException {
-
-        Result.error(403, "抱歉，您没有访问权限");
+        Result.result(ResponseStatusEnum.PERMISSION_DENIED);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.smile.yx.platform.common.security;
 
+import com.smile.yx.platform.common.emuns.ResponseStatusEnum;
 import com.smile.yx.platform.common.utils.Result;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class SecurityController {
 
 
+    /**
+     * springsecurity 没有登录返回
+     * @return
+     */
     @GetMapping("/auth/needLogin")
     public Result needLogin() {
-        return Result.error(401, "请进行登录");
+        return Result.result(ResponseStatusEnum.UNAUTHORIZED);
     }
 }
