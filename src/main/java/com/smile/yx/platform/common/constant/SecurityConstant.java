@@ -29,4 +29,6 @@ public interface SecurityConstant {
      * 用户选择JWT保存时间参数头
      */
     String SAVE_LOGIN = "saveLogin";
+
+    String LOGIN_URL = "/authentication/form";
 }

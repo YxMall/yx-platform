@@ -27,7 +27,9 @@ public class UserDetailsImpl implements UserDetails {
 //    private List<SysRole> roleList;
 
     public UserDetailsImpl(UserVO userVo) {
-        userVo = Optional.ofNullable(userVo).orElseGet(() -> new UserVO());
+        if (userVo==null){
+            return;
+        }
         this.userId = userVo.getUserId();
         this.username = userVo.getUsername();
         this.password = userVo.getPassword();

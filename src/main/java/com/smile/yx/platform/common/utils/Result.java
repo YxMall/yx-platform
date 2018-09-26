@@ -1,28 +1,92 @@
 package com.smile.yx.platform.common.utils;
 
 
+import com.smile.yx.platform.common.emuns.ResponseStatusEnum;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 返回数据
  *
- * @author chenshun
+ * @author smile
  */
 public class Result extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
-    public Result() {
-        put("code", 200);
-        put("msg", "success");
+
+    public static Result result(ResponseStatusEnum status){
+        Result result=new Result();
+        result.put("code",status.getCode());
+        result.put("msg",status.getMsg());
+        return result;
     }
 
+
+    /**
+     * 默认成功
+     * @return
+     */
+    public static  Result success(){
+        Result result=Result.result(ResponseStatusEnum.SUCCESS);
+        return result;
+    }
+
+    /**
+     * 自定义成功信息返回
+     * @param msg
+     * @return
+     */
+    public static  Result success(String msg){
+        Result result = Result.success();
+        result.put("msg",msg);
+        return result;
+    }
+
+
+    /**
+     * 成功返回带参
+     * @param data
+     * @return
+     */
+    public static  Result success(Object data){
+        Result result = Result.success();
+        result.put("data",data);
+        return result;
+    }
+
+
+    /**
+     * 自定义成功信息返回带参
+     * @param data
+     * @return
+     */
+    public static  Result success(String msg ,Object data){
+        Result result = Result.success();
+        result.put("msg",msg);
+        result.put("data",data);
+        return result;
+    }
+
+
+    /**
+     * 默认错误返回
+     * @return
+     */
     public static Result error() {
-        return error(500, "未知异常，请联系管理员");
+        Result result = Result.result(ResponseStatusEnum.INNER_ERROR);
+        return result;
     }
 
+    /**
+     * 自定义失败返回信息方法
+     * @param msg
+     * @return
+     */
     public static Result error(String msg) {
-        return error(500, msg);
+        Result result = Result.result(ResponseStatusEnum.INNER_ERROR);
+        result.put("msg",msg);
+        return result;
     }
 
 
@@ -33,33 +97,4 @@ public class Result extends HashMap<String, Object> {
         return r;
     }
 
-    public static Result success(String msg) {
-        Result r = new Result();
-        r.put("msg", msg);
-        return r;
-    }
-
-    public static Result success(Map<String, Object> map) {
-        Result r = new Result();
-        r.putAll(map);
-        return r;
-    }
-
-    public static Result success(String msg, Object obj) {
-        Result r = new Result();
-        r.put("code", 200);
-        r.put("msg", msg);
-        r.put("data", obj);
-        return r;
-    }
-
-    public static Result ok() {
-        return new Result();
-    }
-
-    @Override
-    public Result put(String key, Object value) {
-        super.put(key, value);
-        return this;
-    }
 }
