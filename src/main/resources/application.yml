@@ -3,17 +3,6 @@ spring:
     name: yxmall_platform
   profiles:
     active: prod
-  redis:
-    database: 0
-    host: 111.230.46.97
-    port: 6379
-    password: wang1993qing1998++.
-    timeout: 90
-    pool:
-      max-active: 8
-      max-wait: -1
-      max-idle: 8
-      min-idle: 0
 server:
   port: 8088
 
@@ -29,11 +18,12 @@ mybatis-plus:
 security:
   ignore:
     urls:
-     - /code/*
-     - /doc.html
-     - /swagger/**
-     - /**/v2/api-docs
-     - /**/*.js
-     - /**/*.css
-     - /**/*.png
-     - /**/*.ico
+    - /code/*
+    - /doc.html
+    - /swagger/**
+    - /**/v2/api-docs
+    - /**/*.js
+    - /**/*.css
+    - /**/*.png
+    - /**/*.ico
+    - /test

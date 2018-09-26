@@ -15,7 +15,9 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * Created by Dell on 23/09/2018.
+ *
+ * @author Dell
+ * @date 23/09/2018
  */
 @Configuration
 public class RedisConfig {
