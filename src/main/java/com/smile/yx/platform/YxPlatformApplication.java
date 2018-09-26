@@ -1,10 +1,15 @@
 package com.smile.yx.platform;
 
+import com.smile.yx.platform.redis.RedisService;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -14,10 +19,10 @@ import org.springframework.web.filter.CorsFilter;
  * @author qing.wang.o
  */
 @SpringBootApplication
-
-
+@EnableScheduling
+@EnableCaching
+@ComponentScan("com.smile.yx.platform.redis")
 public class YxPlatformApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(YxPlatformApplication.class, args);
     }
