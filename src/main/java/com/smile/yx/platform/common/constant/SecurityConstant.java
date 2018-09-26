@@ -30,5 +30,15 @@ public interface SecurityConstant {
      */
     String SAVE_LOGIN = "saveLogin";
 
-    String LOGIN_URL = "/authentication/form";
+
+    /**
+     * 登录地址
+     */
+    String LOGIN_URL = "/auth/login";
+
+    /**
+     * 没有登录返回的地址
+     */
+    String NO_LOGIN_URL = "/auth/require";
+
 }

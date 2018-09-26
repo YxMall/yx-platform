@@ -8,11 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Exrickx
+ * spring security 忽略url
+ *
+ * @author smile
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "ignored")
+@ConfigurationProperties(prefix = "security.ignore")
 public class IgnoredUrlsProperties {
 
     private List<String> urls = new ArrayList<>();

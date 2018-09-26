@@ -1,5 +1,6 @@
-package com.smile.yx.platform.common.security;
+package com.smile.yx.platform.common.security.jwt;
 
+import com.smile.yx.platform.common.constant.SecurityConstant;
 import com.smile.yx.platform.common.emuns.ResponseStatusEnum;
 import com.smile.yx.platform.common.utils.Result;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,10 @@ public class SecurityController {
 
     /**
      * springsecurity 没有登录返回
+     *
      * @return
      */
-    @GetMapping("/auth/needLogin")
+    @GetMapping(SecurityConstant.NO_LOGIN_URL)
     public Result needLogin() {
         return Result.result(ResponseStatusEnum.UNAUTHORIZED);
     }

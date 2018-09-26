@@ -1,4 +1,4 @@
-package com.smile.yx.platform.common.security;
+package com.smile.yx.platform.common.security.jwt;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -18,8 +18,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * Created by Dell on 23/09/2018.
  */
 @Configuration
-@EnableCaching
-public class RedisConfig extends CachingConfigurerSupport {
+public class RedisConfig {
     @Bean
     public <T> RedisTemplate<String, T> redisTemplateKeyString(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, T> redisTemplate = new RedisTemplate<>();
@@ -36,7 +35,10 @@ public class RedisConfig extends CachingConfigurerSupport {
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
-    /**配置其他类型的redisTemplate***/
+
+    /**
+     * 配置其他类型的redisTemplate
+     ***/
     @Bean
     public RedisTemplate<Object, Object> redisTemplateKeyObject(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();

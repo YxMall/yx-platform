@@ -1,7 +1,12 @@
 package com.smile.yx.platform.common.config;
 
 
+import com.smile.yx.platform.common.constant.SecurityConstant;
 import com.smile.yx.platform.common.security.*;
+import com.smile.yx.platform.common.security.jwt.AuthenticationFailHandler;
+import com.smile.yx.platform.common.security.jwt.AuthenticationSuccessHandler;
+import com.smile.yx.platform.common.security.jwt.JWTAuthenticationFilter;
+import com.smile.yx.platform.common.security.jwt.RestAccessDeniedHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -12,18 +17,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.web.cors.CorsUtils;
 
 /**
  * Security 核心配置类
- * 开启控制权限至Controller
  *
- * @author Exrickx
+ * @author smile
  */
 @Slf4j
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true) //开启注解使用
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -40,9 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private RestAccessDeniedHandler accessDeniedHandler;
-//
-//    @Autowired
-//    private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -63,9 +63,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         registry.and()
                 //表单登录方式
                 .formLogin()
-                .loginPage("/auth/needLogin")
+                .loginPage(SecurityConstant.NO_LOGIN_URL)
                 //登录请求url
-                .loginProcessingUrl("/auth/login")
+                .loginProcessingUrl(SecurityConstant.LOGIN_URL)
                 .permitAll()
                 //成功处理类
                 .successHandler(successHandler)
@@ -94,7 +94,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 //添加自定义权限过滤器
 //                .addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class)
-                //添加JWT过滤器 除/xboot/login其它请求都需经过此过滤器
+                //添加JWT过滤器 除登录其它请求都需经过此过滤器
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()));
     }
 }

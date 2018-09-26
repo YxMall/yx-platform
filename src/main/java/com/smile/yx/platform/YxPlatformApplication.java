@@ -16,8 +16,7 @@ import org.springframework.web.filter.CorsFilter;
  */
 @SpringBootApplication
 @EnableScheduling
-@EnableCaching
-@ComponentScan("com.smile.yx.platform.common.utils")
+@ComponentScan("com.smile.yx.platform.*")
 public class YxPlatformApplication {
     public static void main(String[] args) {
         SpringApplication.run(YxPlatformApplication.class, args);

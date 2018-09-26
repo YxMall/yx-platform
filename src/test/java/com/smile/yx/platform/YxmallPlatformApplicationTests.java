@@ -43,7 +43,7 @@ public class YxmallPlatformApplicationTests {
     }
     @Test
     public void redisTest(){
-        redisService.set("wangyajun",178,(long)10);
+        redisService.set("臭咸鱼",178,(long)10);
         System.out.print(redisService.get("wangyajun")+"======================");
     }
 
