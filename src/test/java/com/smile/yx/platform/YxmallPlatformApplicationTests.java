@@ -2,9 +2,9 @@ package com.smile.yx.platform;
 
 import com.github.jsonzou.jmockdata.JMockData;
 import com.github.jsonzou.jmockdata.MockConfig;
+import com.smile.yx.platform.common.utils.RedisUtils;
 import com.smile.yx.platform.entity.SysUser;
 import com.smile.yx.platform.mapper.SysUserMapper;
-import com.smile.yx.platform.redis.RedisService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +15,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ComponentScan("com.smile.yx.platform.redis")
+@ComponentScan("com.smile.yx.platform.common.utils")
 public class YxmallPlatformApplicationTests {
 
     @Autowired
     private SysUserMapper sysUserMapper;
     @Autowired
-    private RedisService redisService;
+    private RedisUtils redisService;
 
 
     @Autowired
