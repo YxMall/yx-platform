@@ -1,4 +1,4 @@
-package com.smile.yx.platform.redis;
+package com.smile.yx.platform.common.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
