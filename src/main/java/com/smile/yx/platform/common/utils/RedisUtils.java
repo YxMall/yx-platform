@@ -1,4 +1,4 @@
-package com.smile.yx.platform.redis;
+package com.smile.yx.platform.common.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -6,7 +6,6 @@ import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Dell on 23/09/2018.
  */
 @Component
-public class RedisService {
+public class RedisUtils {
     @Autowired
     private RedisTemplate redisTemplate;
     @Bean
