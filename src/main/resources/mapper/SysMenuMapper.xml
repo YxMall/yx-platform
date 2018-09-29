@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxmall.platform.modules.system.mapper.SysMenuMapper">
+    <select id="selectPermsByUserId" resultType="java.lang.String">
+        select m.perms from sys_user_role ur
+        LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
+        LEFT JOIN sys_menu m on rm.menu_id = m.menu_id
+        <where>
+            ur.user_id = #{userId} and m.perms is not null
+        </where>
+    </select>
+
+    <select id="selectAllMenuId" resultType="java.lang.Long">
+        select distinct rm.menu_id from sys_user_role ur
+        LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
+        <where>
+            ur.user_id = #{userId}
+        </where>
+    </select>
+</mapper>

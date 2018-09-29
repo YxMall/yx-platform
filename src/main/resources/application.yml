@@ -2,7 +2,7 @@ spring:
   application:
     name: yxmall_platform
   profiles:
-    active: prod
+    active: dev
 server:
   port: 8088
 
@@ -12,14 +12,16 @@ logging:
     com.smile: debug
 
 mybatis-plus:
-  type-aliases-package: com.smile.yx.platform.entity
+  type-aliases-package: com.yxmall.platform.*.entity
   mapper-locations: classpath*:mapper/*.xml
 
 security:
   ignore:
     urls:
     - /code/*
-    - /doc.html
+    - /druid/**
+    - /swagger-ui.html
+    - /swagger-resources/**
     - /swagger/**
     - /**/v2/api-docs
     - /**/*.js
