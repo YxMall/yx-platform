@@ -8,8 +8,6 @@ import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.common.utils.SendMobileSmsUtils;
 import com.yxmall.platform.modules.system.service.SysAuthCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
@@ -22,7 +20,7 @@ import java.awt.image.BufferedImage;
 @Service
 public class SysAuthCodeServiceImpl implements SysAuthCodeService {
 
-    public static final JSONObject CONTENT = new JSONObject();
+//    public static final JSONObject CONTENT = new JSONObject();
     @Autowired
     private Producer producer;
 
@@ -48,23 +46,23 @@ public class SysAuthCodeServiceImpl implements SysAuthCodeService {
 
     @Override
     public Result sendMobileMsgCode(String mobile) {
-        //生成验证码
-        try {
-            String mobileCode = smsUtils.getFourRandom();
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("code", mobileCode);
-            //保存到redis
-            MobileMsgTemplate template = new MobileMsgTemplate(mobile, jsonObject.toString(), "", "SMS_146290969");
-            boolean flag = smsUtils.sendSmsCode(template);
-            if (flag) {
-                redisUtils.set(mobile, mobileCode);
-                return Result.success("发送成功");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ClientException e) {
-            e.printStackTrace();
-        }
+//        //生成验证码
+//        try {
+//            String mobileCode = smsUtils.getFourRandom();
+////            JSONObject jsonObject = new JSONObject();
+////            jsonObject.put("code", mobileCode);
+//            //保存到redis
+//            MobileMsgTemplate template = new MobileMsgTemplate(mobile, jsonObject.toString(), "", "SMS_146290969");
+//            boolean flag = smsUtils.sendSmsCode(template);
+//            if (flag) {
+//                redisUtils.set(mobile, mobileCode);
+//                return Result.success("发送成功");
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        } catch (ClientException e) {
+//            e.printStackTrace();
+//        }
         return Result.error();
     }
 }

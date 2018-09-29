@@ -28,23 +28,24 @@ public class YxmallPlatformApplicationTests {
     private RedisConnectionFactory factory;
 
 
-
     @Test
     public void contextLoads() {
-        MockConfig mockConfig = new MockConfig()
-                .byteRange((byte) 0, Byte.MAX_VALUE)
-                .shortRange((short) 0, Short.MAX_VALUE)
-                .intRange(0, 1)
-                .charSeed((char) 97, (char) 98);
-        for (int i = 0; i < 1000; i++) {
-            SysUser user = JMockData.mock(SysUser.class,mockConfig);
-            sysUserMapper.insert(user);
-        }
-    }
-    @Test
-    public void redisTest(){
-        redisService.set("aaa",178,(long)10);
-        System.out.print(redisService.get("wangyajun")+"======================");
+//        MockConfig mockConfig = new MockConfig()
+//                .byteRange((byte) 0, Byte.MAX_VALUE)
+//                .shortRange((short) 0, Short.MAX_VALUE)
+//                .intRange(0, 1)
+//                .charSeed((char) 97, (char) 98);
+//        for (int i = 0; i < 1000; i++) {
+//            SysUser user = JMockData.mock(SysUser.class,mockConfig);
+//            sysUserMapper.insert(user);
+//        }
     }
 
+    @Test
+    public void redisTest() {
+//        redisService.set("aaa",178,(long)10);
+//        System.out.print(redisService.get("wangyajun")+"======================");
+//    }
+
+    }
 }
