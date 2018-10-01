@@ -1,8 +1,14 @@
 package com.yxmall.platform;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * @description:
@@ -11,10 +17,10 @@ import java.io.IOException;
  **/
 public class TestSms {
     public static void main(String[] args) throws IOException {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String password = "123456";
-        String encodedPassword = encoder.encode(password);
-        System.out.println(encodedPassword);
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        String password = "123456";
+//        String encodedPassword = encoder.encode(password);
+//        System.out.println(encodedPassword);
 //        SysUser user= JMockData.mock(SysUser.class);
 //        System.out.println(user);
 
@@ -37,6 +43,12 @@ public class TestSms {
 //        }
 //        JSONObject smsJSon = SmsCode.sendSmsCode("CCT1VKZB9U25", "TK8HX220RJYAB70A", "17521698619", "78", "1123;马马;你吃饭了吗");
 //        System.out.println(smsJSon.toJSONString());
+
+        String jsonData = FileUtils.readFileToString(ResourceUtils.
+                getFile("classpath:menu.json"), Charset.forName("UTF-8"));
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(jsonData);
+        System.out.println(jsonNode);
     }
 
 

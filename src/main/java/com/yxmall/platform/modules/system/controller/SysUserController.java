@@ -1,6 +1,8 @@
 package com.yxmall.platform.modules.system.controller;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yxmall.platform.common.utils.PageUtils;
 import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.modules.system.entity.SysMenu;
@@ -9,10 +11,15 @@ import com.yxmall.platform.modules.system.service.SysUserService;
 import com.yxmall.platform.modules.system.vo.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +57,7 @@ public class SysUserController extends AbstractController {
 
     @GetMapping("/info")
     @ApiOperation(value = "获取用户信息", tags = "获取用户信息以及功能菜单")
-    public Result getNavMenu() {
+    public Result getNavMenu() throws IOException {
         UserVO user = sysUserService.getUserByUserName(getCurrentUser().getUsername());
         List<SysMenu> menuList = sysMenuService.getUserMenuList(user.getUserId());
         return Result.success().put("menu", menuList).put("permission", user.getPermsList()).put("info", user.getUsername());

@@ -3,6 +3,8 @@ package com.yxmall.platform.modules.system.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -27,11 +29,11 @@ public class SysMenu extends Model<SysMenu> {
     /**
      * 菜单名称
      **/
-    private String name;
+    private String title;
     /**
      * 菜单URL
      **/
-    private String url;
+    private String path;
     /**
      * 授权(多个用逗号分隔，如：user:list,user:create)
      **/
@@ -51,6 +53,8 @@ public class SysMenu extends Model<SysMenu> {
 
 
     @TableField(exist = false)
+    //为空时不惨与序列化
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<SysMenu> children;
 
 
