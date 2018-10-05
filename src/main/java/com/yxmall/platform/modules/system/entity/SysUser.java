@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -27,7 +28,6 @@ public class SysUser extends Model<SysUser> {
     /**
      * 密码
      **/
-
     private String password;
     /**
      * 盐

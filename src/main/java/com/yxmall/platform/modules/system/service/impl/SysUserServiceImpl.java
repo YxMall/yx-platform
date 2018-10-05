@@ -40,7 +40,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         Long createUserId = (Long) params.get("createUserId");
         IPage<SysUser> page = baseMapper.selectPage(
                 new Query<SysUser>(params).getPage(),
-                new QueryWrapper<SysUser>().lambda().like(SysUser::getUsername, username));
+                new QueryWrapper<SysUser>().lambda().like(StringUtils.isNotBlank(username),SysUser::getUsername, username));
         return new PageUtils(page);
     }
 

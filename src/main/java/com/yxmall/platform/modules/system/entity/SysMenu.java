@@ -54,7 +54,7 @@ public class SysMenu extends Model<SysMenu> {
 
     @TableField(exist = false)
     //为空时不惨与序列化
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SysMenu> children;
 
 
@@ -67,4 +67,11 @@ public class SysMenu extends Model<SysMenu> {
     protected Serializable pkVal() {
         return this.menuId;
     }
+
+
+
+
+
+
+
 }

@@ -97,7 +97,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      * @return
      */
     public List<SysMenu> getListParentId(Long parentId) {
-        return baseMapper.selectList(new QueryWrapper<SysMenu>().lambda().eq(SysMenu::getParentId, parentId));
+        return baseMapper.selectList(new QueryWrapper<SysMenu>().lambda().eq(SysMenu::getParentId, parentId).orderByAsc(SysMenu::getOrderNum));
     }
 
     @Override

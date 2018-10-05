@@ -15,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ComponentScan("com.smile.yx.platform.common.utils")
 public class YxmallPlatformApplicationTests {
 
     @Autowired
@@ -30,15 +29,15 @@ public class YxmallPlatformApplicationTests {
 
     @Test
     public void contextLoads() {
-//        MockConfig mockConfig = new MockConfig()
-//                .byteRange((byte) 0, Byte.MAX_VALUE)
-//                .shortRange((short) 0, Short.MAX_VALUE)
-//                .intRange(0, 1)
-//                .charSeed((char) 97, (char) 98);
-//        for (int i = 0; i < 1000; i++) {
-//            SysUser user = JMockData.mock(SysUser.class,mockConfig);
-//            sysUserMapper.insert(user);
-//        }
+        MockConfig mockConfig = new MockConfig()
+                .byteRange((byte) 0, Byte.MAX_VALUE)
+                .shortRange((short) 0, Short.MAX_VALUE)
+                .intRange(0, 1)
+                .charSeed((char) 97, (char) 98);
+        for (int i = 0; i < 1000; i++) {
+            SysUser user = JMockData.mock(SysUser.class,mockConfig);
+            sysUserMapper.insert(user);
+        }
     }
 
     @Test

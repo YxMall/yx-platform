@@ -1,5 +1,6 @@
 package com.yxmall.platform.modules.system.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
 import com.yxmall.platform.modules.system.entity.SysMenu;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class UserVO implements Serializable {
     /**
      * 密码
      **/
-
+    @JsonIgnore
     private String password;
     /**
      * 盐
@@ -55,19 +56,12 @@ public class UserVO implements Serializable {
 
     private Date createTime;
 
-    /**
-     * 是否禁用
-     *
-     * @return
-     */
-    public boolean getEnableFlag() {
-        return Objects.equal(status, 0);
-    }
 
 
     /**
      * 功能权限列表
      */
+    @JsonIgnore
     private List<String> permsList;
 
 

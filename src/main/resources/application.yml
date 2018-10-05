@@ -3,13 +3,16 @@ spring:
     name: yxmall_platform
   profiles:
     active: prod
+  jackson:
+      time-zone: GMT+8
+      date-format: yyyy-MM-dd HH:mm:ss
 server:
   port: 8088
 
 # Logger Config
 logging:
   level:
-    com.smile: debug
+    com.yxmall: debug
 
 mybatis-plus:
   type-aliases-package: com.yxmall.platform.*.entity

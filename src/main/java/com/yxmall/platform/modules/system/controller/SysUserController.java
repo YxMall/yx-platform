@@ -56,11 +56,11 @@ public class SysUserController extends AbstractController {
 
 
     @GetMapping("/info")
-    @ApiOperation(value = "获取用户信息", tags = "获取用户信息以及功能菜单")
+    @ApiOperation(value = "获取用户信息", notes = "获取用户信息以及功能菜单")
     public Result getNavMenu() throws IOException {
         UserVO user = sysUserService.getUserByUserName(getCurrentUser().getUsername());
         List<SysMenu> menuList = sysMenuService.getUserMenuList(user.getUserId());
-        return Result.success().put("menu", menuList).put("permission", user.getPermsList()).put("info", user.getUsername());
+        return Result.success().put("menu", menuList).put("permission", user.getPermsList()).put("info", user);
     }
 
 }
