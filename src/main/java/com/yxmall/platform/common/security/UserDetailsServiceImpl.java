@@ -24,6 +24,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetailsImpl loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("登陆用户名： {}", username);
         UserVO userVO = sysUserService.getUserByUserName(username);
-        return new UserDetailsImpl(userVO);
+        if (userVO != null) {
+            return new UserDetailsImpl(userVO);
+        }
+        return null;
     }
 }

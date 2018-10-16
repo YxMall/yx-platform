@@ -5,8 +5,12 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.yxmall.platform.common.validator.group.AddGroup;
+import com.yxmall.platform.common.validator.group.UpdateGroup;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -25,10 +29,18 @@ public class SysMenu extends Model<SysMenu> {
     /**
      * 父菜单ID，一级菜单为0
      **/
+    @NotNull(message = "父级ID不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private Long parentId;
+
+    /**
+     * 对应前端组件的名称
+     */
+    private String name;
+
     /**
      * 菜单名称
      **/
+    @NotBlank(message = "菜单标题不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private String title;
     /**
      * 菜单URL
@@ -41,6 +53,7 @@ public class SysMenu extends Model<SysMenu> {
     /**
      * 类型   0：目录   1：菜单   2：按钮
      **/
+    @NotNull(message = "菜单类型不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private Integer type;
     /**
      * 菜单图标
@@ -67,11 +80,6 @@ public class SysMenu extends Model<SysMenu> {
     protected Serializable pkVal() {
         return this.menuId;
     }
-
-
-
-
-
 
 
 }

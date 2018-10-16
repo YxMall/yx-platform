@@ -22,7 +22,7 @@ public interface SysUserService extends IService<SysUser> {
      * @param params
      * @return
      */
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils getUserListPage(Map<String, Object> params);
 
     /**
      * 获取用户
@@ -33,5 +33,10 @@ public interface SysUserService extends IService<SysUser> {
     UserVO getUserByUserName(String username);
 
 
-
+    /**
+     * 更改启用状态
+     *
+     * @param sysUser 用户id 状态
+     */
+    void isEnable(SysUser sysUser);
 }

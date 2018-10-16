@@ -1,10 +1,12 @@
 package com.yxmall.platform.modules.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.modules.system.entity.SysMenu;
-import com.yxmall.platform.modules.system.vo.MenuVO;
+import com.yxmall.platform.modules.system.vo.ElTreeVO;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 菜单管理(SysMenu)表服务接口
@@ -21,7 +23,7 @@ public interface SysMenuService extends IService<SysMenu> {
      * @param userId
      * @return
      */
-    List<String> getPermsByUserId(Long userId);
+    Set<String> getPermsByUserId(Long userId);
 
 
     /**
@@ -39,4 +41,19 @@ public interface SysMenuService extends IService<SysMenu> {
      * @return
      */
     List<SysMenu> getUserMenuList(Long currentUserId);
+
+
+    /**
+     * 获取菜单树列表
+     *
+     * @return
+     */
+    List<SysMenu> getMenuTreeList();
+
+    /**
+     * 根据id删除
+     * @param id
+     * @return
+     */
+    Result deleteMenuById(Long id);
 }

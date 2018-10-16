@@ -3,16 +3,20 @@ package com.yxmall.platform.modules.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yxmall.platform.common.constant.CommonConstant;
+import com.yxmall.platform.common.utils.Result;
+import com.yxmall.platform.modules.system.entity.SysRoleMenu;
 import com.yxmall.platform.modules.system.mapper.SysMenuMapper;
 import com.yxmall.platform.modules.system.entity.SysMenu;
 import com.yxmall.platform.modules.system.service.SysMenuService;
-import com.yxmall.platform.modules.system.service.SysUserService;
-import com.yxmall.platform.modules.system.vo.MenuVO;
+import com.yxmall.platform.modules.system.service.SysRoleMenuService;
+import com.yxmall.platform.modules.system.vo.ElTreeVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -22,13 +26,16 @@ import java.util.stream.Collectors;
  * @since 2018-09-27 10:14:05
  */
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
 
+    private final SysRoleMenuService sysRoleMenuService;
 
     @Override
-    public List<String> getPermsByUserId(Long userId) {
+    public Set<String> getPermsByUserId(Long userId) {
         return baseMapper.selectPermsByUserId(userId);
     }
+
 
     @Override
     public List<SysMenu> getUserMenuList(Long currentUserId) {
@@ -41,8 +48,47 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         return getAllMenuList(menuIdList);
     }
 
+    @Override
+    public List<SysMenu> getMenuTreeList() {
+        List<SysMenu> allMenuList = getAllMenuList(null);
+        for (SysMenu sysMenu : allMenuList) {
+            List<SysMenu> children = sysMenu.getChildren();
+            if (!CollectionUtils.isEmpty(children)) {
+                for (SysMenu child : children) {
+                    child.setChildren(baseMapper.selectList(new QueryWrapper<SysMenu>().lambda().eq(SysMenu::getParentId, child.getMenuId())));
+                }
+            }
+        }
+        return allMenuList;
+    }
+
+    @Override
+    public Result deleteMenuById(Long id) {
+        //判断是否能删除
+        SysMenu sysMenu = baseMapper.selectById(id);
+        if (sysMenu == null) {
+            return Result.error("菜单不存在");
+        }
+        Integer type = sysMenu.getType();
+        //检查是否有子目录
+        if (type.equals(CommonConstant.MenuType.MENU.getValue()) || type.equals(CommonConstant.MenuType.CATALOG.getValue())) {
+            List<SysMenu> sysMenus = baseMapper.selectList(new QueryWrapper<SysMenu>().lambda().eq(SysMenu::getParentId, id));
+            if (!CollectionUtils.isEmpty(sysMenus)) {
+                return Result.error("该菜单下面有子菜单,请先删除子菜单");
+            }
+        }
+        //是否有角色引用该菜单
+        List<SysRoleMenu> roleMenuList = sysRoleMenuService.getRoleMenuListByMenuId(id);
+        if (!CollectionUtils.isEmpty(roleMenuList)) {
+            return Result.error("请先取消使用该权限的角色权限");
+        }
+        int i = baseMapper.deleteById(id);
+        return Result.isDelSuccess(i > 0);
+    }
+
+
     /**
-     * 获取
+     * 获取全部菜单
      *
      * @param menuIdList
      * @return
@@ -58,11 +104,12 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     /**
      * 递归获取子菜单
      *
-     * @param menuList
+     * @param menuList   菜单列表
      * @param menuIdList
      */
     private List<SysMenu> getMenuTreeList(List<SysMenu> menuList, List<Long> menuIdList) {
         List<SysMenu> subList = menuList.stream().map(menu -> {
+                    //动态生成菜单
                     if (menu.getType() == CommonConstant.MenuType.CATALOG.getValue()) {
                         menu.setChildren(getMenuTreeList(getListParentId(menu.getMenuId(), menuIdList), menuIdList));
                     }
@@ -104,5 +151,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public List<Long> getAllMenuId(Long userId) {
         return baseMapper.selectAllMenuId(userId);
     }
+
 
 }

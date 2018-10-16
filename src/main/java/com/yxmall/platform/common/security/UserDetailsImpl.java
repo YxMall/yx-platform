@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @description: 用户详情实现
@@ -28,7 +29,7 @@ public class UserDetailsImpl implements UserDetails {
     private String username;
     private String password;
     private Integer status;
-    private List<String> permsList;
+    private Set<String> permsList;
 
     public UserDetailsImpl(UserVO userVo) {
         if (userVo != null) {

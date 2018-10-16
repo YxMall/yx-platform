@@ -57,6 +57,6 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
                 .signWith(SignatureAlgorithm.HS512, SecurityConstant.JWT_SIGN_KEY)
                 .compact();
         token = SecurityConstant.TOKEN_SPLIT + token;
-        ResponseUtil.out(response, Result.success("登录成功", token));
+        ResponseUtil.out(response, Result.success().put("username",username).put("accessToken",token));
     }
 }

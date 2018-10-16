@@ -57,12 +57,11 @@ public class UserVO implements Serializable {
     private Date createTime;
 
 
-
     /**
      * 功能权限列表
      */
     @JsonIgnore
-    private List<String> permsList;
+    private Set<String> permsList;
 
 
 }

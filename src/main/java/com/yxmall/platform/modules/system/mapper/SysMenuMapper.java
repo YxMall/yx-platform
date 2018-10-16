@@ -5,6 +5,7 @@ import com.yxmall.platform.modules.system.entity.SysMenu;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 菜单管理(SysMenu)表数据库访问层
@@ -21,7 +22,7 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
      * @param userId
      * @return
      */
-    List<String> selectPermsByUserId(@Param("userId") Long userId);
+    Set<String> selectPermsByUserId(@Param("userId") Long userId);
 
     /**
      * 获取用户所有权限ID

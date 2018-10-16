@@ -5,10 +5,12 @@
         SELECT
         user_id,
         username,
+        nick_name,
         `password`,
-        salt,
+        avatar,
         email,
         mobile,
+        gender,
         `status`,
         create_user_id,
         create_time

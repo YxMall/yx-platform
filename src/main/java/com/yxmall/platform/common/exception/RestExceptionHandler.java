@@ -1,15 +1,15 @@
-package com.yxmall.platform.common.exception;
-
-import com.yxmall.platform.common.utils.Result;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-/**
- * @description: 异常处理类
- * @author: qing.wang.o
- * @create: 2018-09-28 13:34
- **/
+//package com.yxmall.platform.common.exception;
+//
+//import com.yxmall.platform.common.utils.Result;
+//import lombok.extern.slf4j.Slf4j;
+//import org.springframework.web.bind.annotation.ExceptionHandler;
+//import org.springframework.web.bind.annotation.RestControllerAdvice;
+//
+///**
+// * @description: 异常处理类
+// * @author: qing.wang.o
+// * @create: 2018-09-28 13:34
+// **/
 //@RestControllerAdvice
 //@Slf4j
 //public class RestExceptionHandler {
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 //     */
 //    @ExceptionHandler(Exception.class)
 //    public Result handleException(Exception e) {
-//        return Result.error(e.getMessage());
+//        return Result.error(e.getLocalizedMessage());
 //    }
 //
 //

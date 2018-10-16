@@ -1,8 +1,10 @@
 package com.yxmall.platform.modules.system.controller;
 
 import com.yxmall.platform.common.security.UserDetailsImpl;
+import com.yxmall.platform.common.utils.Result;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 

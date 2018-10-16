@@ -1,9 +1,14 @@
 package com.yxmall.platform.modules.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yxmall.platform.common.exception.BaseException;
+import com.yxmall.platform.common.utils.PageUtils;
+import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.modules.system.entity.SysRole;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 角色(SysRole)表服务接口
@@ -21,4 +26,45 @@ public interface SysRoleService extends IService<SysRole> {
      * @return
      */
     List<SysRole> getRoleByUserId(Long userId);
+
+    /**
+     * 分页查询角色
+     *
+     * @param params
+     * @return
+     */
+    PageUtils getRoleListPage(Map<String, Object> params);
+
+    /**
+     * 生产角色
+     *
+     * @param id
+     * @return
+     */
+    Result deleteRoleById(Long id);
+
+
+    /**
+     * 添加角色信息
+     *
+     * @param sysRole
+     * @return
+     */
+    Result addRole(SysRole sysRole);
+
+    /**
+     * 修改角色信息
+     *
+     * @param sysRole
+     * @return
+     */
+    Result updateRole(SysRole sysRole);
+
+    /**
+     * 获取角色信息
+     *
+     * @param roleId 角色id
+     * @return
+     */
+    Result getRoleInfo(Long roleId);
 }

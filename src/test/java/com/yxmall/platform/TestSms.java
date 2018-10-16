@@ -17,10 +17,10 @@ import java.nio.charset.Charset;
  **/
 public class TestSms {
     public static void main(String[] args) throws IOException {
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        String password = "123456";
-//        String encodedPassword = encoder.encode(password);
-//        System.out.println(encodedPassword);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String password = "123456";
+        String encodedPassword = encoder.encode(password);
+        System.out.println(encodedPassword);
 //        SysUser user= JMockData.mock(SysUser.class);
 //        System.out.println(user);
 

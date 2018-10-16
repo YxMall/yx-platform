@@ -1,8 +1,11 @@
 package com.yxmall.platform.modules.system.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 
@@ -15,7 +18,7 @@ import java.io.Serializable;
 @Data
 public class SysRoleMenu extends Model<SysRoleMenu> {
 
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
     /**
      * 角色ID

@@ -25,15 +25,20 @@ public class SysUser extends Model<SysUser> {
      **/
 
     private String username;
+
+    /**
+     * 昵称
+     */
+    private String nickName;
     /**
      * 密码
      **/
     private String password;
     /**
-     * 盐
+     * 头像
      **/
 
-    private String salt;
+    private String avatar;
     /**
      * 邮箱
      **/
@@ -42,13 +47,19 @@ public class SysUser extends Model<SysUser> {
     /**
      * 手机号
      **/
-
     private String mobile;
+
+
     /**
-     * 状态  0：正常   1：禁用
+     * 性别  true: 男 false:女
+     */
+    private Boolean gender;
+
+    /**
+     * 状态  true：正常   false：禁用
      **/
 
-    private Integer status;
+    private Boolean status;
     /**
      * 创建者ID
      **/

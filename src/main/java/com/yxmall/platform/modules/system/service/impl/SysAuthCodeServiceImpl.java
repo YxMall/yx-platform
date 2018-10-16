@@ -7,6 +7,7 @@ import com.yxmall.platform.common.utils.RedisUtils;
 import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.common.utils.SendMobileSmsUtils;
 import com.yxmall.platform.modules.system.service.SysAuthCodeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,18 +19,14 @@ import java.awt.image.BufferedImage;
  * @create: 2018-09-14 13:57
  **/
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SysAuthCodeServiceImpl implements SysAuthCodeService {
 
-//    public static final JSONObject CONTENT = new JSONObject();
-    @Autowired
-    private Producer producer;
+    private final Producer producer;
 
-    @Autowired
-    private RedisUtils redisUtils;
+    private final RedisUtils redisUtils;
 
-    @Autowired
-    private SendMobileSmsUtils smsUtils;
-
+    private final SendMobileSmsUtils smsUtils;
     /**
      * 验证码过期时间 统一5分钟
      */

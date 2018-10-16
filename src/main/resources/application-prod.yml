@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://111.230.46.97:3306/yxmall_platform?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://111.230.46.97:3306/yxmall_platform?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false
     username: yxmall_platform
     password: 123456
     type: com.zaxxer.hikari.HikariDataSource
