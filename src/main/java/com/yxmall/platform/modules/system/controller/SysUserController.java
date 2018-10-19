@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yxmall.platform.common.utils.PageUtils;
 import com.yxmall.platform.common.utils.Result;
+import com.yxmall.platform.common.validator.ValidatorUtils;
+import com.yxmall.platform.common.validator.group.AddGroup;
 import com.yxmall.platform.modules.system.entity.SysMenu;
 import com.yxmall.platform.modules.system.entity.SysUser;
 import com.yxmall.platform.modules.system.service.SysMenuService;
@@ -49,7 +51,7 @@ public class SysUserController extends AbstractController {
      * @param params 查询条件
      * @return 所有数据
      */
-    @GetMapping
+    @GetMapping("list")
     @ApiOperation(value = "查询", notes = "根据User对象创建用户")
     public PageUtils getUserListPage(@RequestParam Map<String, Object> params) {
         return sysUserService.getUserListPage(params);
@@ -74,9 +76,34 @@ public class SysUserController extends AbstractController {
 
     @GetMapping("/{id:\\d+}")
     @ApiOperation(value = "用户基本信息", notes = "获取用户基本信息")
-    public SysUser roleInfo(@PathVariable(name = "id") Long userId) {
-        return sysUserService.getById(userId);
+    public Result roleInfo(@PathVariable(name = "id") Long userId) {
+        return sysUserService.getUserInfo(userId);
     }
 
+
+    @PostMapping
+    @ApiOperation(value = "添加用户", notes = "添加用户基本信息")
+    public Result addUser(@RequestBody SysUser sysUser) {
+        ValidatorUtils.validateEntity(sysUser, AddGroup.class);
+        return sysUserService.addUser(sysUser);
+    }
+
+    @PutMapping
+    @ApiOperation(value = "修改用户", notes = "修改用户基本信息")
+    public Result updateUser(@RequestBody SysUser sysUser) {
+        return sysUserService.updateUser(sysUser);
+    }
+
+
+    @DeleteMapping("/{id:\\d+}")
+    public Result deleteUser(@PathVariable(name = "id") Long userId) {
+        return sysUserService.deleteUserById(userId);
+    }
+
+    @PostMapping("checkName")
+    @ApiOperation(value = "检查用户名是否存在", notes = "检查用户名是否存在")
+    public boolean checkName(@RequestBody SysUser sysUser) {
+        return sysUserService.checkUserName(sysUser);
+    }
 
 }

@@ -2,10 +2,10 @@ package com.yxmall.platform.modules.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yxmall.platform.common.utils.PageUtils;
+import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.modules.system.entity.SysUser;
 import com.yxmall.platform.modules.system.vo.UserVO;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,4 +39,42 @@ public interface SysUserService extends IService<SysUser> {
      * @param sysUser 用户id 状态
      */
     void isEnable(SysUser sysUser);
+
+    /**
+     * 添加用户信息
+     *
+     * @param sysUser
+     * @return
+     */
+    Result addUser(SysUser sysUser);
+
+    /**
+     * 修改用户信息
+     *
+     * @param sysUser
+     * @return
+     */
+    Result updateUser(SysUser sysUser);
+
+    /**
+     * 获取用户信息
+     * @param userId
+     * @return
+     */
+    Result getUserInfo(Long userId);
+
+    /**
+     * 检查用户名是否存在
+     * @param sysUser
+     * @return
+     */
+    Boolean checkUserName(SysUser sysUser);
+
+
+    /**
+     * 删除用户
+     * @param userId
+     * @return
+     */
+    Result deleteUserById(Long userId);
 }

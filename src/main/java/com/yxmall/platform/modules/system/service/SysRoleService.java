@@ -36,7 +36,7 @@ public interface SysRoleService extends IService<SysRole> {
     PageUtils getRoleListPage(Map<String, Object> params);
 
     /**
-     * 生产角色
+     *删除角色
      *
      * @param id
      * @return

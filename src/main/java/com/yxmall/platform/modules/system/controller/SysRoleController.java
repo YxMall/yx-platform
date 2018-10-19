@@ -44,6 +44,13 @@ public class SysRoleController extends AbstractController {
         return sysRoleService.getRoleListPage(params);
     }
 
+    @GetMapping("/all")
+    @ApiOperation(value = "获取全部角色", notes = "获取全部角色信息")
+    public List<SysRole> getAllRole() {
+        //TODO 根据createUserID 只能查看自己创建的角色
+        return sysRoleService.list(null);
+    }
+
     @DeleteMapping("/{id:\\d+}")
     @ApiOperation(value = "删除角色", notes = "根据ID删除角色")
     public Result deleteRole(@PathVariable(name = "id") Long id) {

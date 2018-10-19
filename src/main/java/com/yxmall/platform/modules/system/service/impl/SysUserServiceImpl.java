@@ -4,20 +4,26 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yxmall.platform.common.constant.CommonConstant;
+import com.yxmall.platform.common.exception.BaseException;
 import com.yxmall.platform.common.utils.PageUtils;
 import com.yxmall.platform.common.utils.Query;
+import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.modules.system.entity.SysMenu;
+import com.yxmall.platform.modules.system.entity.SysRole;
+import com.yxmall.platform.modules.system.entity.SysUserRole;
 import com.yxmall.platform.modules.system.mapper.SysUserMapper;
 import com.yxmall.platform.modules.system.entity.SysUser;
 import com.yxmall.platform.modules.system.service.SysMenuService;
 import com.yxmall.platform.modules.system.service.SysRoleService;
+import com.yxmall.platform.modules.system.service.SysUserRoleService;
 import com.yxmall.platform.modules.system.service.SysUserService;
 import com.yxmall.platform.modules.system.vo.UserVO;
-import javafx.scene.control.Menu;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,7 +39,9 @@ import java.util.stream.Collectors;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     private final SysMenuService sysMenuService;
-
+    private final SysRoleService sysRoleService;
+    private final SysUserRoleService sysUserRoleService;
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public PageUtils getUserListPage(Map<String, Object> params) {
@@ -71,6 +79,68 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         baseMapper.updateById(sysUser);
     }
 
+    @Override
+    @Transactional(rollbackFor = {BaseException.class})
+    public Result addUser(SysUser sysUser) {
+        //TODO 创建该用户的Id
+        sysUser.setCreateUserId(0L);
+        sysUser.setCreateTime(new Date());
+        //密码加密
+        String encodePwd = passwordEncoder.encode(sysUser.getPassword());
+        sysUser.setPassword(encodePwd);
+        //添加用户
+        int flag = baseMapper.insert(sysUser);
+        //更新或者添加用户角色
+        sysUserRoleService.addOrUpdateUserRole(sysUser.getUserId(), sysUser.getRoleIds());
+        return Result.isAddSuccess(retBool(flag));
+    }
 
+    @Override
+    @Transactional(rollbackFor = {BaseException.class})
+    public Result updateUser(SysUser sysUser) {
+        if (StringUtils.isBlank(sysUser.getPassword())) {
+            sysUser.setPassword(null);
+        }
+        //添加用户
+        int flag = baseMapper.updateById(sysUser);
+        //更新或者添加用户角色
+        sysUserRoleService.addOrUpdateUserRole(sysUser.getUserId(), sysUser.getRoleIds());
+        return Result.isEditSuccess(retBool(flag));
+    }
+
+    @Override
+    public Result getUserInfo(Long userId) {
+        Result result = new Result();
+        SysUser sysUser = baseMapper.selectById(userId);
+        sysUser.setPassword(null);
+        result.put("user", sysUser);
+        //获取该用户拥有的角色ID
+        List<SysRole> sysRoles = sysRoleService.getRoleByUserId(userId);
+        result.put("roleIds", sysRoles.stream().map(SysRole::getRoleId).collect(Collectors.toList()));
+        return result;
+    }
+
+    @Override
+    public Boolean checkUserName(SysUser sysUser) {
+        String username = sysUser.getUsername();
+        UserVO userVO = baseMapper.selectUserByName(username);
+        if (sysUser.getUserId().equals(userVO.getUserId())) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional(rollbackFor = BaseException.class)
+    public Result deleteUserById(Long userId) {
+        if (userId.equals(CommonConstant.SUPER_ADMIN_ID)) {
+            return  Result.error("超级管理员无法删除");
+        }
+        //删除用户
+        int flag = baseMapper.deleteById(userId);
+        //删除用户角色关联
+        sysUserRoleService.remove(new QueryWrapper<SysUserRole>().lambda().eq(SysUserRole::getUserId, userId));
+        return Result.isDelSuccess(retBool(flag));
+    }
 
 }

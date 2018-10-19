@@ -9,7 +9,6 @@ import com.yxmall.platform.modules.system.mapper.SysMenuMapper;
 import com.yxmall.platform.modules.system.entity.SysMenu;
 import com.yxmall.platform.modules.system.service.SysMenuService;
 import com.yxmall.platform.modules.system.service.SysRoleMenuService;
-import com.yxmall.platform.modules.system.vo.ElTreeVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

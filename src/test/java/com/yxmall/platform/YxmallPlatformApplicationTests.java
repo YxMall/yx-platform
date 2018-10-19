@@ -3,6 +3,7 @@ package com.yxmall.platform;
 import com.github.jsonzou.jmockdata.JMockData;
 import com.github.jsonzou.jmockdata.MockConfig;
 import com.yxmall.platform.common.utils.RedisUtils;
+import com.yxmall.platform.common.utils.TimeUtils;
 import com.yxmall.platform.modules.system.entity.SysRole;
 import com.yxmall.platform.modules.system.entity.SysUser;
 import com.yxmall.platform.modules.system.mapper.SysUserMapper;
@@ -14,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.time.LocalDateTime;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -55,6 +58,7 @@ public class YxmallPlatformApplicationTests {
 //        redisService.set("aaa",178,(long)10);
 //        System.out.print(redisService.get("wangyajun")+"======================");
 //    }
-
+        String s = TimeUtils.parseTime(LocalDateTime.now());
+        System.out.println(s);
     }
 }

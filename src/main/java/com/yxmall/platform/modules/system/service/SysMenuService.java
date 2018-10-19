@@ -3,7 +3,6 @@ package com.yxmall.platform.modules.system.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.modules.system.entity.SysMenu;
-import com.yxmall.platform.modules.system.vo.ElTreeVO;
 
 import java.util.List;
 import java.util.Set;
