@@ -32,7 +32,7 @@ public class TestController {
 
     @PostMapping("upload")
     public Result upload(MultipartFile file) throws IOException {
-        OssStorageFactory.build().upload(file.getInputStream(), "1.jpg");
+        OssStorageFactory.build().upload(file, "1.jpg");
         return Result.success();
     }
 }

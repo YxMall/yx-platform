@@ -140,7 +140,7 @@
         <dependency>
             <groupId>com.qcloud</groupId>
             <artifactId>cos_api</artifactId>
-            <version>4.7</version>
+            <version>5.4.5</version>
         </dependency>
     </dependencies>
 

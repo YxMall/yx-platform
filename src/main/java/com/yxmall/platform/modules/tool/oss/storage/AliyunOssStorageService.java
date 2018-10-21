@@ -1,7 +1,9 @@
 package com.yxmall.platform.modules.tool.oss.storage;
 
 import com.aliyun.oss.OSSClient;
+import com.qcloud.cos.model.ObjectMetadata;
 import com.yxmall.platform.common.exception.BaseException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.InputStream;
@@ -27,9 +29,12 @@ public class AliyunOssStorageService extends OssStorageService {
     }
 
     @Override
-    public String upload(InputStream inputStream, String path) {
+    public String upload(MultipartFile file, String path) {
         try {
-            client.putObject(config.getBucketName(), path, inputStream);
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+             objectMetadata.setContentLength(file.getSize());
+            objectMetadata.setContentType(file.getContentType());
+            client.putObject(config.getBucketName(), path, file.getInputStream());
         } catch (Exception e) {
             throw new BaseException("上传文件失败，请检查配置信息", e);
         }

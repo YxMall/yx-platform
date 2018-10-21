@@ -1,9 +1,13 @@
 package com.yxmall.platform.modules.tool.oss.storage;
 
 import com.yxmall.platform.common.utils.TimeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -30,16 +34,20 @@ public abstract class OssStorageService {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         //文件路径
 //        String path = DateUtils.for(new Date(), "yyyyMMdd") + "/" + uuid;
-        return "";
+        String path= TimeUtils.parseTime(LocalDateTime.now(), TimeUtils.TimeFormat.SHORT_DATE_PATTERN_NONE)+ "/" + uuid;
+        if (StringUtils.isNotBlank(prefix)){
+            path=prefix+'/'+path;
+        }
+        return path+suffix;
     }
 
 
     /**
      * 文件上传
      *
-     * @param inputStream 文件 上传路径
+     * @param file 文件 上传路径
      * @param path
      * @return
      */
-    public abstract String upload(InputStream inputStream, String path);
+    public abstract String upload(MultipartFile file, String path);
 }
