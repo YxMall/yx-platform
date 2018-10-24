@@ -19,11 +19,11 @@ import java.io.InputStream;
  * @author: qing.wang.o
  * @create: 2018-10-18 14:01
  **/
-public class QloudOssStorageService extends OssStorageService {
+public class QCloudOssStorageService extends OssStorageService {
 
     private COSClient client;
 
-    public QloudOssStorageService(OssStorageConfig config) {
+    public QCloudOssStorageService(OssStorageConfig config) {
         this.config = config;
         //初始化
         init();
@@ -34,11 +34,15 @@ public class QloudOssStorageService extends OssStorageService {
         COSCredentials cred = new BasicCOSCredentials(config.getAccessKeyId(), config.getAccessKeySecret());
         // 2 设置bucket的区域, COS地域的简称请参照 https://www.qcloud.com/document/product/436/6224
         ClientConfig clientConfig = new ClientConfig(new Region(config.getEndpoint()));
-        client= new COSClient(cred, clientConfig);
+        client = new COSClient(cred, clientConfig);
     }
 
     @Override
     public String upload(MultipartFile file, String path) {
+        //路径前面需要/
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
         try {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             // 从输入流上传必须制定content length, 否则http客户端可能会缓存所有数据，存在内存OOM的情况
@@ -56,6 +60,12 @@ public class QloudOssStorageService extends OssStorageService {
             throw new BaseException("上传文件失败，请检查配置信息", e);
         }
 
-        return config.getEndpoint() + "/" + path;
+        /**
+         * 用户在所属地域广州创建了一个存储桶，存储桶名中用户自定义字符串部分为 example，系统自动为用户生成的数字串 APPID 为 1234567890，则其默认访问域名为：
+         *
+         *  example-1234567890.cos.ap-guangzhou.myqcloud.com
+         */
+        return config.getDomain() + path;
+
     }
 }

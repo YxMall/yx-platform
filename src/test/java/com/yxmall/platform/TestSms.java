@@ -2,7 +2,9 @@ package com.yxmall.platform;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yxmall.platform.common.utils.JsonUtils;
 import com.yxmall.platform.common.utils.TimeUtils;
+import com.yxmall.platform.modules.tool.oss.storage.OssStorageConfig;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -74,4 +76,17 @@ public class TestSms {
         System.out.println(s);
     }
 
+    @Test
+    public void jsonTest() throws Exception {
+        String str = "{\n" +
+                "\"ossType\": 1,\n" +
+                "\"endpoint\": \"oss-cn-beijing.aliyuncs.com\",\n" +
+                "\"accessKeyId\": \"LTAIqRHCKGq7maHb\",\n" +
+                "\"accessKeySecret\": \"okIHeSC7qFftR9FKsEzL7OyA9EVF7L\",\n" +
+                "\"bucketName\": \"superadmin\",\n" +
+                "\"domain\": \"https://superadmin.oss-cn-beijing.aliyuncs.com\"\n" +
+                "}";
+        OssStorageConfig ossStorageConfig = JsonUtils.jsonToObj(str, OssStorageConfig.class);
+
+    }
 }

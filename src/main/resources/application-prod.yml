@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://111.230.46.97:3306/yxmall_platform?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false
-    username: yxmall_platform
-    password: 123456
+    url: jdbc:mysql://zpcrrnlt.2371.dnstoo.com/yxmall?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false
+    username: yxmall_f
+    password: yxmall
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       minimum-idle: 5
@@ -17,7 +17,7 @@ spring:
     database: 0
     host: 111.230.46.97
     port: 6379
-    password: wang1993qing1998++.
+    password: aIvI7mhSSsAVBiuA
     timeout: 6000ms  # 连接超时时长（毫秒）
     jedis:
       pool:

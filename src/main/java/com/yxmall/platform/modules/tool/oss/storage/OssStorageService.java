@@ -23,22 +23,33 @@ public abstract class OssStorageService {
     OssStorageConfig config;
 
     /**
-     * 生成文件名 防止重复
+     * 生成文件名 包含路径 防止重复
      *
-     * @param prefix
-     * @param suffix
+     * @param prefix 前缀
+     * @param suffix 后缀
      * @return
      */
-    public String generateFileName(String prefix, String suffix) {
+    public static String generateFileName(String prefix, String suffix) {
         //生成uuid
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         //文件路径
-//        String path = DateUtils.for(new Date(), "yyyyMMdd") + "/" + uuid;
-        String path= TimeUtils.parseTime(LocalDateTime.now(), TimeUtils.TimeFormat.SHORT_DATE_PATTERN_NONE)+ "/" + uuid;
-        if (StringUtils.isNotBlank(prefix)){
-            path=prefix+'/'+path;
+        String path = TimeUtils.parseTime(LocalDateTime.now(), TimeUtils.TimeFormat.SHORT_DATE_PATTERN_NONE) + "/" + uuid;
+        if (StringUtils.isNotBlank(prefix)) {
+            path = prefix + '/' + path;
         }
-        return path+suffix;
+        return path + suffix;
+    }
+
+
+    /**
+     * 获取文件名后缀 包含.
+     *
+     * @param fileName 文件
+     * @return
+     */
+    public static String getFileSuffixName(String fileName) {
+        String suffix = fileName.substring(fileName.lastIndexOf("."));
+        return suffix;
     }
 
 

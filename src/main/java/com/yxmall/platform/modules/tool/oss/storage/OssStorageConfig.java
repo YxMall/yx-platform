@@ -16,7 +16,13 @@ public class OssStorageConfig {
 
 
     /**
-     * oss地址
+     * oss 类型 参考ossconstant
+     */
+    private Integer ossType;
+
+
+    /**
+     * oss地址 阿里云：endpoint  腾讯云：Region
      */
     private String endpoint;
 
@@ -35,5 +41,11 @@ public class OssStorageConfig {
      * 桶
      */
     private String bucketName;
+
+
+    /**
+     * 预览域名
+     */
+    private String domain;
 
 }

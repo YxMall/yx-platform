@@ -96,9 +96,11 @@ public class SysUserController extends AbstractController {
 
 
     @DeleteMapping("/{id:\\d+}")
+    @ApiOperation(value = "删除用户", notes = "根据ID删除用户")
     public Result deleteUser(@PathVariable(name = "id") Long userId) {
         return sysUserService.deleteUserById(userId);
     }
+
 
     @PostMapping("checkName")
     @ApiOperation(value = "检查用户名是否存在", notes = "检查用户名是否存在")

@@ -32,13 +32,13 @@ public class AliyunOssStorageService extends OssStorageService {
     public String upload(MultipartFile file, String path) {
         try {
             ObjectMetadata objectMetadata = new ObjectMetadata();
-             objectMetadata.setContentLength(file.getSize());
+            objectMetadata.setContentLength(file.getSize());
             objectMetadata.setContentType(file.getContentType());
             client.putObject(config.getBucketName(), path, file.getInputStream());
         } catch (Exception e) {
             throw new BaseException("上传文件失败，请检查配置信息", e);
         }
 
-        return config.getEndpoint() + "/" + path;
+        return config.getDomain() + "/" + path;
     }
 }
