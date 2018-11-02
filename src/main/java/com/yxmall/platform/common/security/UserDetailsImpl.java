@@ -28,7 +28,7 @@ public class UserDetailsImpl implements UserDetails {
     private Long userId;
     private String username;
     private String password;
-    private Integer status;
+    private Boolean status;
     private Set<String> permsList;
 
     public UserDetailsImpl(UserVO userVo) {
@@ -94,6 +94,6 @@ public class UserDetailsImpl implements UserDetails {
      * 是否禁用
      */
     public boolean isEnabled() {
-        return CommonConstant.USER_NORMAL_STATUS.equals(this.status);
+        return status;
     }
 }

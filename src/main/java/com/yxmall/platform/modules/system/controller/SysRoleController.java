@@ -40,14 +40,13 @@ public class SysRoleController extends AbstractController {
     @GetMapping("/list")
     @ApiOperation(value = "获取角色", notes = "获取角色分页信息")
     public PageUtils getRoleListPage(@RequestParam Map<String, Object> params) {
-        //TODO 根据createUserID 只能查看自己创建的角色
+        params.put("userId", getCurrentUserId());
         return sysRoleService.getRoleListPage(params);
     }
 
     @GetMapping("/all")
     @ApiOperation(value = "获取全部角色", notes = "获取全部角色信息")
     public List<SysRole> getAllRole() {
-        //TODO 根据createUserID 只能查看自己创建的角色
         return sysRoleService.list(null);
     }
 
@@ -67,6 +66,7 @@ public class SysRoleController extends AbstractController {
     @ApiOperation(value = "添加角色", notes = "添加角色信息")
     public Result addRole(@RequestBody SysRole sysRole) {
         ValidatorUtils.validateEntity(sysRole, AddGroup.class);
+        sysRole.setCreateUserId(getCurrentUserId());
         return sysRoleService.addRole(sysRole);
     }
 

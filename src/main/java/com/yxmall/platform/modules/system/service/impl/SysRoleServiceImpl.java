@@ -50,9 +50,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public PageUtils getRoleListPage(Map<String, Object> params) {
         String roleName = (String) params.get("roleName");
+        Long userId = (Long) params.get("userId");
         IPage<SysRole> page = baseMapper.selectPage(
                 new Query<SysRole>(params).getPage(),
-                new QueryWrapper<SysRole>().lambda().like(SysRole::getRoleName, roleName)
+                new QueryWrapper<SysRole>().lambda().like(SysRole::getRoleName, roleName).eq(SysRole::getCreateUserId, userId)
         );
         return new PageUtils(page);
     }
@@ -76,8 +77,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Transactional(rollbackFor = BaseException.class)
     public Result addRole(SysRole sysRole) {
         //保存角色
-        //TODO  添加创建该用户的ID
-        sysRole.setCreateUserId(0L);
         sysRole.setCreateTime(new Date());
         int flag = baseMapper.insert(sysRole);
         //添加角色和菜单关系

@@ -3,6 +3,7 @@
 <mapper namespace="com.yxmall.platform.modules.system.mapper.SysRoleMapper">
     <select id="selectRoleByUserId" resultType="com.yxmall.platform.modules.system.entity.SysRole">
         SELECT
+        DISTINCT
         r.role_id,
         r.role_name,
         r.remark,

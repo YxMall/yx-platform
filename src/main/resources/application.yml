@@ -2,10 +2,15 @@ spring:
   application:
     name: yxmall_platform
   profiles:
-    active: prod
+    active: dev
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
 server:
   port: 8088
 
@@ -39,6 +44,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+
 
 security:
   ignore:

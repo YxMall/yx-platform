@@ -19,11 +19,13 @@ import com.yxmall.platform.modules.system.service.SysUserRoleService;
 import com.yxmall.platform.modules.system.service.SysUserService;
 import com.yxmall.platform.modules.system.vo.UserVO;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -124,7 +126,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Boolean checkUserName(SysUser sysUser) {
         String username = sysUser.getUsername();
         UserVO userVO = baseMapper.selectUserByName(username);
-        if (sysUser.getUserId().equals(userVO.getUserId())) {
+        if (ObjectUtils.allNotNull(userVO) && sysUser.getUserId().equals(userVO.getUserId())) {
             return true;
         }
         return false;
@@ -134,13 +136,23 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = BaseException.class)
     public Result deleteUserById(Long userId) {
         if (userId.equals(CommonConstant.SUPER_ADMIN_ID)) {
-            return  Result.error("超级管理员无法删除");
+            return Result.error("超级管理员无法删除");
         }
         //删除用户
         int flag = baseMapper.deleteById(userId);
         //删除用户角色关联
         sysUserRoleService.remove(new QueryWrapper<SysUserRole>().lambda().eq(SysUserRole::getUserId, userId));
         return Result.isDelSuccess(retBool(flag));
+    }
+
+    @Override
+    public Result updateCurrentUserInfo(SysUser sysUser) {
+        if (StringUtils.isBlank(sysUser.getPassword())) {
+            sysUser.setPassword(null);
+        }
+        //添加用户
+        int flag = baseMapper.updateById(sysUser);
+        return Result.isEditSuccess(retBool(flag));
     }
 
 }

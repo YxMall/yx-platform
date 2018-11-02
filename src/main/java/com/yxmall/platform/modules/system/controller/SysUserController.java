@@ -73,10 +73,23 @@ public class SysUserController extends AbstractController {
         return Result.success();
     }
 
+    @GetMapping("/getCurrentUser")
+    @ApiOperation(value = "当前用户信息", notes = "获取当前用户信息")
+    public UserVO getCurrentUserInfo() {
+        return sysUserService.getUserByUserName(getCurrentUser().getUsername());
+    }
+
+    @PutMapping("/updateCurrentUser")
+    @ApiOperation(value = "修改用户信息", notes = "修改当前用户信息")
+    public Result updateCurrentUserInfo(@RequestBody SysUser sysUser) {
+        //防止用户利用该接口修改别人信息
+        sysUser.setUserId(getCurrentUserId());
+        return  sysUserService.updateCurrentUserInfo(sysUser);
+    }
 
     @GetMapping("/{id:\\d+}")
     @ApiOperation(value = "用户基本信息", notes = "获取用户基本信息")
-    public Result roleInfo(@PathVariable(name = "id") Long userId) {
+    public Result userInfo(@PathVariable(name = "id") Long userId) {
         return sysUserService.getUserInfo(userId);
     }
 

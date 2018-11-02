@@ -2,6 +2,9 @@ package com.yxmall.platform.modules.system.controller;
 
 import com.yxmall.platform.common.security.UserDetailsImpl;
 import com.yxmall.platform.common.utils.Result;
+import com.yxmall.platform.common.utils.SpringBeanUtils;
+import com.yxmall.platform.modules.system.service.SysUserService;
+import com.yxmall.platform.modules.system.vo.UserVO;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +30,22 @@ public abstract class AbstractController {
                 .getAuthentication()
                 .getPrincipal();
         return userDetails;
+    }
+
+
+    /**
+     * 获取当前登录用户ID
+     *
+     * @return
+     */
+    public Long getCurrentUserId() {
+        UserDetails currentUser = getCurrentUser();
+        if (currentUser != null) {
+            SysUserService userService = SpringBeanUtils.getBean(SysUserService.class);
+            UserVO user = userService.getUserByUserName(currentUser.getUsername());
+            return user.getUserId();
+        }
+        return null;
     }
 
 

@@ -77,4 +77,11 @@ public interface SysUserService extends IService<SysUser> {
      * @return
      */
     Result deleteUserById(Long userId);
+
+    /**
+     * 修改当前用户信息
+     * @param sysUser
+     * @return
+     */
+    Result updateCurrentUserInfo(SysUser sysUser);
 }
