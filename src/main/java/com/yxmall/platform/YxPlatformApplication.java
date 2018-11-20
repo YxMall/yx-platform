@@ -1,10 +1,15 @@
 package com.yxmall.platform;
 
+import com.yxmall.platform.common.dataSource.DynamicDataSourceRegister;
 import org.mybatis.spring.annotation.MapperScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.cors.CorsConfiguration;
@@ -17,7 +22,9 @@ import org.springframework.web.filter.CorsFilter;
 @SpringBootApplication
 @EnableScheduling
 @ComponentScan(basePackages = {"com.yxmall.platform.*"})
+@Import({DynamicDataSourceRegister.class}) // 注册动态多数据源
 public class YxPlatformApplication {
+    protected final static Logger logger = LoggerFactory.getLogger(YxPlatformApplication.class);
     public static void main(String[] args) {
         SpringApplication.run(YxPlatformApplication.class, args);
     }
