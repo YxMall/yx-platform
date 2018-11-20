@@ -16,7 +16,7 @@ logging:
 
 mybatis-plus:
   type-aliases-package: com.yxmall.platform.*.entity
-  mapper-locations: classpath*:mapper/*.xml
+  mapper-locations: classpath*:mapper/**/*.xml
   #实体扫描，多个package用逗号或者分号分隔
   global-config:
     # 数据库相关配置
