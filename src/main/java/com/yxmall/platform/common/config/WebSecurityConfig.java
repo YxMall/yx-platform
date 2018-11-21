@@ -6,6 +6,7 @@ import com.yxmall.platform.common.security.jwt.AuthenticationFailHandler;
 import com.yxmall.platform.common.security.jwt.AuthenticationSuccessHandler;
 import com.yxmall.platform.common.security.jwt.JWTAuthenticationFilter;
 import com.yxmall.platform.common.security.jwt.RestAccessDeniedHandler;
+import com.yxmall.platform.common.security.permission.MyFilterSecurityInterceptor;
 import com.yxmall.platform.common.security.validate.ValidateCodeFilter;
 import com.yxmall.platform.common.security.IgnoredUrlsProperties;
 import com.yxmall.platform.common.security.UserDetailsServiceImpl;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 
@@ -50,6 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ValidateCodeFilter validateCodeFilter;
 
+    @Autowired
+    private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -66,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         for (String url : ignoredUrlsProperties.getUrls()) {
             registry.antMatchers(url).permitAll();
         }
-        registry.requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
+//        registry.requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
         registry.and()
                 //表单登录方式
                 .formLogin()
@@ -99,6 +103,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //自定义权限拒绝处理类
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 .and()
+                //自定义权限过滤器
+                .addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class)
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 //添加自定义权限过滤器
 //                .addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class)

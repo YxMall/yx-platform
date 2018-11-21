@@ -84,8 +84,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     @Transactional(rollbackFor = {BaseException.class})
     public Result addUser(SysUser sysUser) {
-        //TODO 创建该用户的Id
-        sysUser.setCreateUserId(0L);
         sysUser.setCreateTime(new Date());
         //密码加密
         String encodePwd = passwordEncoder.encode(sysUser.getPassword());
@@ -126,7 +124,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Boolean checkUserName(SysUser sysUser) {
         String username = sysUser.getUsername();
         UserVO userVO = baseMapper.selectUserByName(username);
-        if (ObjectUtils.allNotNull(userVO) && sysUser.getUserId().equals(userVO.getUserId())) {
+        if (null==userVO || sysUser.getUserId().equals(userVO.getUserId())) {
             return true;
         }
         return false;

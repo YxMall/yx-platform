@@ -3,6 +3,7 @@ package com.yxmall.platform.modules.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yxmall.platform.common.constant.CommonConstant;
 import com.yxmall.platform.common.exception.BaseException;
 import com.yxmall.platform.common.utils.PageUtils;
 import com.yxmall.platform.common.utils.Query;
@@ -17,6 +18,7 @@ import com.yxmall.platform.modules.system.service.SysRoleMenuService;
 import com.yxmall.platform.modules.system.service.SysRoleService;
 import com.yxmall.platform.modules.system.service.SysUserRoleService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +55,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         Long userId = (Long) params.get("userId");
         IPage<SysRole> page = baseMapper.selectPage(
                 new Query<SysRole>(params).getPage(),
-                new QueryWrapper<SysRole>().lambda().like(SysRole::getRoleName, roleName).eq(SysRole::getCreateUserId, userId)
+                new QueryWrapper<SysRole>().lambda().like(SysRole::getRoleName, roleName)
+                        .eq(!userId.equals(CommonConstant.SUPER_ADMIN_ID), SysRole::getCreateUserId, userId)
+                        .orderBy(true, true, SysRole::getCreateTime)
         );
         return new PageUtils(page);
     }

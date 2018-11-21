@@ -43,6 +43,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         List<GrantedAuthority> list = (List<GrantedAuthority>) ((UserDetails) authentication.getPrincipal()).getAuthorities();
         List<String> authorities = new ArrayList<>();
         for (GrantedAuthority g : list) {
+            //此处将权限信息添加到 GrantedAuthority 对象中，在后面进行全权限验证时会使用GrantedAuthority 对象。
             authorities.add(g.getAuthority());
         }
         //登陆成功生成JWT

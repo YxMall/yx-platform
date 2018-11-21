@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +52,7 @@ public class SysUserController extends AbstractController {
      * @param params 查询条件
      * @return 所有数据
      */
-    @GetMapping("list")
+    @GetMapping("/list")
     @ApiOperation(value = "查询", notes = "根据User对象创建用户")
     public PageUtils getUserListPage(@RequestParam Map<String, Object> params) {
         return sysUserService.getUserListPage(params);
@@ -87,28 +88,29 @@ public class SysUserController extends AbstractController {
         return  sysUserService.updateCurrentUserInfo(sysUser);
     }
 
-    @GetMapping("/{id:\\d+}")
+    @GetMapping("/get/{id:\\d+}")
     @ApiOperation(value = "用户基本信息", notes = "获取用户基本信息")
     public Result userInfo(@PathVariable(name = "id") Long userId) {
         return sysUserService.getUserInfo(userId);
     }
 
 
-    @PostMapping
+    @PostMapping("/add")
     @ApiOperation(value = "添加用户", notes = "添加用户基本信息")
     public Result addUser(@RequestBody SysUser sysUser) {
         ValidatorUtils.validateEntity(sysUser, AddGroup.class);
+        sysUser.setCreateUserId(getCurrentUserId());
         return sysUserService.addUser(sysUser);
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     @ApiOperation(value = "修改用户", notes = "修改用户基本信息")
     public Result updateUser(@RequestBody SysUser sysUser) {
         return sysUserService.updateUser(sysUser);
     }
 
 
-    @DeleteMapping("/{id:\\d+}")
+    @DeleteMapping("/delete/{id:\\d+}")
     @ApiOperation(value = "删除用户", notes = "根据ID删除用户")
     public Result deleteUser(@PathVariable(name = "id") Long userId) {
         return sysUserService.deleteUserById(userId);

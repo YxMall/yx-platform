@@ -1,7 +1,10 @@
 package com.yxmall.platform.common.security.jwt;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.yxmall.platform.common.constant.SecurityConstant;
 import com.yxmall.platform.common.exception.BaseException;
+import com.yxmall.platform.common.utils.JsonUtils;
+import com.yxmall.platform.common.utils.ResponseUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -10,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -39,7 +43,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.info(request.getRequestURI()+"&"+request.getContentType()+"&"+request.getMethod());
+        log.info(request.getRequestURI() + "&" + request.getContentType() + "&" + request.getMethod());
 
         String header = request.getHeader(SecurityConstant.HEADER);
         if (StringUtils.isBlank(header)) {
@@ -79,21 +83,19 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
                 String authority = claims.get(SecurityConstant.AUTHORITIES).toString();
 
                 if (StringUtils.isNotBlank(authority)) {
-//                    List<String> list = new Gson().fromJson(authority, new TypeToken<List<String>>() {
-//                    }.getType());
-//                    for (String ga : list) {
-//                        authorities.add(new SimpleGrantedAuthority(ga));
-//                    }
+                    List<String> list = JsonUtils.jsonToList(authority, String.class);
+                    for (String ga : list) {
+                        authorities.add(new SimpleGrantedAuthority(ga));
+                    }
                 }
                 if (StringUtils.isNotBlank(username)) {
-                    //Exrick踩坑提醒 此处password不能为null
                     User principal = new User(username, "", authorities);
                     return new UsernamePasswordAuthenticationToken(principal, null, authorities);
                 }
             } catch (ExpiredJwtException e) {
                 throw new BaseException("登录已失效，请重新登录");
             } catch (Exception e) {
-//                Result.r(response, ResponseUtil.resultMap(false, 500, "解析token错误"));
+                throw new BaseException(e.getMessage());
             }
         }
         return null;

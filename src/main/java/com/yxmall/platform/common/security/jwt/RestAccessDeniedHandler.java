@@ -2,6 +2,7 @@ package com.yxmall.platform.common.security.jwt;
 
 
 import com.yxmall.platform.common.emuns.ResponseStatusEnum;
+import com.yxmall.platform.common.utils.ResponseUtil;
 import com.yxmall.platform.common.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -23,7 +24,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
             throws IOException, ServletException {
-        Result.result(ResponseStatusEnum.PERMISSION_DENIED);
+        ResponseUtil.out(response, Result.result(ResponseStatusEnum.PERMISSION_DENIED));
     }
 
 }

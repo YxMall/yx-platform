@@ -53,4 +53,10 @@ public class TestController {
         String result = OssStorageFactory.build().upload(file, OssStorageService.generateFileName("file", fileSuffixName));
         return Result.success(result);
     }
+
+    public static void main(String[] args) {
+        int i=9999  ;
+        System.out.println((i+"").length());
+    }
+
 }

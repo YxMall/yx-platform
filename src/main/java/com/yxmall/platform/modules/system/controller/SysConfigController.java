@@ -29,19 +29,19 @@ public class SysConfigController {
     @Autowired
     private SysConfigService sysConfigService;
 
-    @GetMapping("list")
+    @GetMapping("/list")
     @ApiOperation(value = "查询", notes = "根据User对象创建用户")
     public PageUtils getConfigListPage(@RequestParam Map<String, Object> params) {
         return sysConfigService.getConfigListPage(params);
     }
 
-    @DeleteMapping("/{id:\\d+}")
+    @DeleteMapping("/delete/{id:\\d+}")
     @ApiOperation(value = "删除系统配置", notes = "根据ID删除系统配置")
     public Result deleteConfig(@PathVariable(name = "id") Long configId) {
         return Result.isDelSuccess(sysConfigService.removeById(configId));
     }
 
-    @PostMapping
+    @PostMapping("/add")
     @ApiOperation(value = "添加系统配置", notes = "添加系统配置")
     public Result addConfig(@RequestBody SysConfig sysConfig) {
         ValidatorUtils.validateEntity(sysConfig, AddGroup.class);
@@ -49,15 +49,14 @@ public class SysConfigController {
         return Result.isAddSuccess(sysConfigService.save(sysConfig));
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     @ApiOperation(value = "修改系统配置", notes = "修改系统配置")
     public Result updateConfig(@RequestBody SysConfig sysConfig) {
         ValidatorUtils.validateEntity(sysConfig, UpdateGroup.class);
         return Result.isEditSuccess(sysConfigService.updateById(sysConfig));
     }
 
-
-    @GetMapping("/{id:\\d+}")
+    @GetMapping("/get/{id:\\d+}")
     @ApiOperation(value = "角色信息", notes = "根据ID获取角色信息")
     public SysConfig configInfo(@PathVariable(name = "id") Long configId) {
         return sysConfigService.getById(configId);

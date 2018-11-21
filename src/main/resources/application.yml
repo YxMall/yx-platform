@@ -10,6 +10,13 @@ spring:
     multipart:
       max-file-size: -1
       max-request-size: -1
+  mail:
+    default-encoding: utf-8
+    host: smtp.126.com
+    username: yx_mall@126.com
+    password: yxmall2018
+    port: 25
+    protocol: smtp
 
 server:
   port: 8088
@@ -50,7 +57,6 @@ security:
   ignore:
     urls:
     - /code/*
-    - /druid/**
     - /swagger-ui.html
     - /swagger-resources/**
     - /swagger/**

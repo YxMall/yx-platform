@@ -50,19 +50,19 @@ public class SysRoleController extends AbstractController {
         return sysRoleService.list(null);
     }
 
-    @DeleteMapping("/{id:\\d+}")
+    @DeleteMapping("/delete/{id:\\d+}")
     @ApiOperation(value = "删除角色", notes = "根据ID删除角色")
     public Result deleteRole(@PathVariable(name = "id") Long id) {
         return sysRoleService.deleteRoleById(id);
     }
 
-    @GetMapping("/{id:\\d+}")
+    @GetMapping("/get/{id:\\d+}")
     @ApiOperation(value = "角色信息", notes = "根据ID获取角色信息")
     public Result roleInfo(@PathVariable(name = "id") Long roleId) {
         return sysRoleService.getRoleInfo(roleId);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     @ApiOperation(value = "添加角色", notes = "添加角色信息")
     public Result addRole(@RequestBody SysRole sysRole) {
         ValidatorUtils.validateEntity(sysRole, AddGroup.class);
@@ -70,7 +70,7 @@ public class SysRoleController extends AbstractController {
         return sysRoleService.addRole(sysRole);
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     @ApiOperation(value = "修改角色", notes = "修改角色信息")
     public Result updateRole(@RequestBody SysRole sysRole) {
         ValidatorUtils.validateEntity(sysRole, UpdateGroup.class);
