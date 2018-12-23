@@ -1,0 +1,16 @@
+-- 菜单SQL
+INSERT INTO `sys_menu` ( `parent_id`, `name`, `title`, `path`, `perms`, `type`, `icon`, `order_num` )
+VALUES
+	(1, '${className}', '${comments}', '${moduleName}/${pathName}', '${moduleName}:${pathName}', 1, 'file', 0 );
+-- 按钮父菜单ID
+set @parentId = @@identity;
+
+-- 菜单对应按钮SQL
+INSERT INTO `sys_menu` ( `parent_id`, `name`, `title`, `path`, `perms`, `type`, `icon`, `order_num` )
+    SELECT @parentId,null, '查看${comments}', '${moduleName}/${pathName}/list', '${moduleName}:${pathName}:list', '2', '', '6';
+INSERT INTO `sys_menu` ( `parent_id`, `name`, `title`, `path`, `perms`, `type`, `icon`, `order_num` )
+    SELECT @parentId,null, '新增${comments}', '${moduleName}/${pathName}/add', '${moduleName}:${pathName}:add', '2', '', '6';
+INSERT INTO `sys_menu` ( `parent_id`, `name`, `title`, `path`, `perms`, `type`, `icon`, `order_num` )
+    SELECT @parentId,null, '修改${comments}', '${moduleName}/${pathName}/update', '${moduleName}:${pathName}:edit', '2', '', '6';
+INSERT INTO `sys_menu` ( `parent_id`, `name`, `title`, `path`, `perms`, `type`, `icon`, `order_num` )
+  SELECT @parentId,null, '删除${comments}', '${moduleName}/${pathName}/delete', '${moduleName}:${pathName}:delete', '2', '', '6';

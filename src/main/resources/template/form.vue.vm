@@ -1,0 +1,107 @@
+<template>
+  <el-dialog :title="!${pathName}Item.id? '新增' : '修改'"
+             :visible.sync="${pathName}FormVisible">
+    <el-form ref="${pathName}Form"
+             :rules="${pathName}FormRules"
+             :model="${pathName}Item"
+             hide-required-asterisk='true'
+             label-width="100px">
+		#foreach($column in $columns)
+			#if($column.columnName != $pk.columnName)
+				<el-form-item label="${column.comments}" prop="${column.attrname}">
+				  <el-input v-model="${pathName}Item.${column.attrname}" placeholder="${column.comments}"></el-input>
+				</el-form-item>
+			#end
+		#end
+    </el-form>
+    <span slot="footer"
+          class="dialog-footer">
+      <el-button @click="${pathName}FormVisible = false">取 消</el-button>
+      <el-button type="primary"
+                 @click="submit${className}FormHandle()">确 定</el-button>
+    </span>
+  </el-dialog>
+</template>
+
+<script>
+import { add${className}, update${className}, ${pathName}Info } from '@/api/${moduleName}/${pathName}';
+export default {
+  name: '${pathName}Form',
+  data () {
+    return {
+      ${pathName}FormVisible: true,
+      ${pathName}Item: {
+        #foreach($column in $columns)
+			#if($column.columnName == $pk.columnName)
+					  ${column.attrname}: 0,
+			#else
+					  ${column.attrname}: ''#if($velocityCount != $columns.size()),#end
+		#end
+		#end
+      },
+      ${pathName}FormRules: {
+        #foreach($column in $columns)
+		#if($column.columnName != $pk.columnName)
+				  ${column.attrname}: [
+					{ required: true, message: '${column.comments}不能为空', trigger: 'blur' }
+				  ]#if($velocityCount != $columns.size()),#end
+
+		#end
+		#end
+      }
+    }
+  },
+  methods: {
+    /**
+     * 初始化表单
+     */
+    initForm (id) {
+      // 先清除表单信息
+      this.${pathName}Item.id = id || 0
+       // 修改
+      if (this.${pathName}Item.id !== 0) {
+         ${pathName}Info(id).then(res => {
+           this.${pathName}Item = res.data;
+         })
+       }
+        this.${pathName}FormVisible = true
+        this.$nextTick(() => {
+            ${ref}['${pathName}Form'].resetFields()
+        })
+    },
+    /**
+     * 提交菜单
+     */
+    submit${className}FormHandle () {
+       ${ref}['${pathName}Form'].validate((valid) => {
+        if (valid) {
+              if (this.${pathName}Item.id !== 0) {
+                update${className}(this.${pathName}Item).then(res => {
+                  this.$message({
+                    message: res.msg,
+                    type: 'success'
+                  });
+                  this.${pathName}FormVisible = false;
+                  this.$emit('refreshDataList')
+                })
+              } else {
+                 add${className}(this.${pathName}Item).then(res => {
+                  this.$message({
+                    message: res.msg,
+                    type: 'success'
+                  });
+                  this.${pathName}FormVisible = false;
+                  #[[ this.$emit('refreshDataList')]]#
+                })
+              }
+            } else {
+              return false;
+            }
+          });
+        }
+  }
+}
+</script>
+
+<style>
+</style>

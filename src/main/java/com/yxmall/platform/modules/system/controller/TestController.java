@@ -12,9 +12,8 @@ import com.yxmall.platform.modules.tool.oss.storage.OssStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -27,12 +26,13 @@ import java.lang.reflect.Field;
  **/
 @RestController
 @Slf4j
+@RequestMapping("/test")
 public class TestController {
 
     @Autowired
     private RedisUtils redisUtils;
 
-    @RequestMapping("/test")
+
     public String test() {
         SysConfig config = SpringBeanUtils.getBean(SysConfigService.class).getSysConfigByKey("ossConfigKey");
         try {
@@ -52,6 +52,17 @@ public class TestController {
         String fileSuffixName = OssStorageService.getFileSuffixName(file.getOriginalFilename());
         String result = OssStorageFactory.build().upload(file, OssStorageService.generateFileName("file", fileSuffixName));
         return Result.success(result);
+    }
+
+
+    @Autowired
+    SimpMessagingTemplate template;
+
+    @ResponseBody
+    @GetMapping("/chat")
+    public String handleChat( String msg) {
+        template.convertAndSendToUser("admin", "/queue/notifications",  "给您发来了消息：" + msg);
+        return "admin";
     }
 
     public static void main(String[] args) {

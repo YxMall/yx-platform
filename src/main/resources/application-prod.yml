@@ -15,9 +15,9 @@ spring:
       connection-test-query: SELECT 1 FROM DUAL
   redis:
     database: 0
-    host: 111.230.46.97
+    host: 193.112.34.221
     port: 6379
-    password: aIvI7mhSSsAVBiuA
+    password: wangyajun12345
     timeout: 6000ms  # 连接超时时长（毫秒）
     jedis:
       pool:

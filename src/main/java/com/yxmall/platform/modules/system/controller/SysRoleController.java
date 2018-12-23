@@ -74,7 +74,7 @@ public class SysRoleController extends AbstractController {
     @ApiOperation(value = "修改角色", notes = "修改角色信息")
     public Result updateRole(@RequestBody SysRole sysRole) {
         ValidatorUtils.validateEntity(sysRole, UpdateGroup.class);
-        return sysRoleService.addRole(sysRole);
+        return sysRoleService.updateRole(sysRole);
     }
 
 

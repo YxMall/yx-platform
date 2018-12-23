@@ -2,6 +2,7 @@ package com.yxmall.platform.common.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
@@ -38,8 +39,13 @@ public class JsonUtils {
     /**
      * javaBean、列表数组转换为json字符串
      */
-    public static String objToJson(Object obj) throws Exception {
-        return objectMapper.writeValueAsString(obj);
+    public static String objToJson(Object obj) {
+        try {
+            return objectMapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

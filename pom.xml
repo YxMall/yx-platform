@@ -28,6 +28,8 @@
         <commons.lang3.vesrion>3.7</commons.lang3.vesrion>
         <commons.io.version>2.6</commons.io.version>
         <kaptcha.version>2.3.2</kaptcha.version>
+        <velocity.version>1.7</velocity.version>
+        <commons.configuration.version>1.10</commons.configuration.version>
     </properties>
 
     <dependencies>
@@ -155,6 +157,19 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
+        <!--da-->
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>${commons.configuration.version}</version>
+        </dependency>
+
+        <!--代码生成-->
+        <dependency>
+            <artifactId>velocity</artifactId>
+            <groupId>org.apache.velocity</groupId>
+            <version>${velocity.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

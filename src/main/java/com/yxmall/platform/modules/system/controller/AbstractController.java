@@ -1,8 +1,10 @@
 package com.yxmall.platform.modules.system.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yxmall.platform.common.security.UserDetailsImpl;
 import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.common.utils.SpringBeanUtils;
+import com.yxmall.platform.modules.system.entity.SysUser;
 import com.yxmall.platform.modules.system.service.SysUserService;
 import com.yxmall.platform.modules.system.vo.UserVO;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +44,7 @@ public abstract class AbstractController {
         UserDetails currentUser = getCurrentUser();
         if (currentUser != null) {
             SysUserService userService = SpringBeanUtils.getBean(SysUserService.class);
-            UserVO user = userService.getUserByUserName(currentUser.getUsername());
+            SysUser user = userService.getOne(new QueryWrapper<SysUser>().lambda().eq(SysUser::getUsername, currentUser.getUsername()));
             return user.getUserId();
         }
         return null;

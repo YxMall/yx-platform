@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -16,6 +17,7 @@ import org.springframework.web.filter.CorsFilter;
  */
 @SpringBootApplication
 @EnableScheduling
+@EnableAsync //开启异步调用
 @ComponentScan(basePackages = {"com.yxmall.platform.*"})
 public class YxPlatformApplication {
     public static void main(String[] args) {

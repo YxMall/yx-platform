@@ -2,7 +2,7 @@ spring:
   application:
     name: yxmall_platform
   profiles:
-    active: dev
+    active: prod
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
@@ -65,4 +65,6 @@ security:
     - /**/*.css
     - /**/*.png
     - /**/*.ico
-    - /test
+    - /endpointChat/**
+    - /generator/**
+    - /test/**

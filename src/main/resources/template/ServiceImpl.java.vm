@@ -1,0 +1,33 @@
+package ${package}.${moduleName}.service.impl;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.stereotype.Service;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yxmall.platform.common.utils.PageUtils;
+import com.yxmall.platform.common.utils.Query;
+import com.yxmall.platform.common.utils.Result;
+
+import ${package}.${moduleName}.mapper.${className}Mapper;
+import ${package}.${moduleName}.entity.${className};
+import ${package}.${moduleName}.service.${className}Service;
+
+
+@Service("${classname}Service")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${className}> implements ${className}Service {
+
+    @Override
+    public PageUtils get${className}ListPage(Map<String, Object> params) {
+        IPage<${className}> page = baseMapper.selectPage(
+                new Query<${className}>(params).getPage(),
+                new QueryWrapper<${className}>()
+        );
+
+        return new PageUtils(page);
+    }
+
+}
