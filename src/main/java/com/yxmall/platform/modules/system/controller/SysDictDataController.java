@@ -61,7 +61,7 @@ public class SysDictDataController {
     @ApiOperation(value = "添加数据字典索引表", notes = "添加数据字典索引表信息")
     public Result addDictData(@RequestBody SysDictData dictData) {
         dictData.setCreateTime(new Date());
-        return Result.isAddSuccess(dictDataService.save(dictData));
+        return Result.isSuccess(dictDataService.save(dictData));
     }
 
     /**
@@ -70,7 +70,7 @@ public class SysDictDataController {
     @PutMapping("/update")
     @ApiOperation(value = "修改数据字典索引表", notes = "修改数据字典索引表信息")
     public Result updateDictData(@RequestBody SysDictData dictData) {
-        return Result.isEditSuccess(dictDataService.updateById(dictData));
+        return Result.isSuccess(dictDataService.updateById(dictData));
     }
 
 
@@ -80,7 +80,7 @@ public class SysDictDataController {
     @DeleteMapping("/delete/{dataId:\\d+}")
     @ApiOperation(value = "删除数据字典索引表", notes = "根据ID删除数据字典索引表")
     public Result deleteDictData(@PathVariable("dataId") Integer dataId) {
-        return Result.isDelSuccess(dictDataService.removeById(dataId));
+        return Result.isSuccess(dictDataService.removeById(dataId));
     }
 
 

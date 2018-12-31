@@ -77,19 +77,13 @@ export default {
         if (valid) {
               if (this.${pathName}Item.${pk.attrname} !== 0) {
                 update${className}(this.${pathName}Item).then(res => {
-                  this.$message({
-                    message: res.msg,
-                    type: 'success'
-                  });
+                  this.msgUtil.isUpdateSuccess(res)
                   this.${pathName}FormVisible = false;
                   this.$emit('refreshDataList')
                 })
               } else {
                  add${className}(this.${pathName}Item).then(res => {
-                  this.$message({
-                    message: res.msg,
-                    type: 'success'
-                  });
+                  this.msgUtil.isAddSuccess(res)
                   this.${pathName}FormVisible = false;
                   #[[ this.$emit('refreshDataList')]]#
                 })

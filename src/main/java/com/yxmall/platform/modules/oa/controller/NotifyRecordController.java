@@ -87,7 +87,7 @@ public class NotifyRecordController extends AbstractController {
     @PostMapping("/add")
     @ApiOperation(value = "添加通知通告发送记录", notes = "添加通知通告发送记录信息")
     public Result addNotifyRecord(@RequestBody NotifyRecord notifyRecord) {
-        return Result.isAddSuccess(notifyRecordService.save(notifyRecord));
+        return Result.isSuccess(notifyRecordService.save(notifyRecord));
     }
 
     /**
@@ -96,7 +96,7 @@ public class NotifyRecordController extends AbstractController {
     @DeleteMapping("/delete")
     @ApiOperation(value = "删除通知通告发送记录", notes = "根据ID删除通知通告发送记录")
     public Result deleteNotifyRecord(@RequestBody List<Long> recordsId) {
-        return Result.isDelSuccess(notifyRecordService.removeByIds(recordsId));
+        return Result.isSuccess(notifyRecordService.removeByIds(recordsId));
     }
 
 

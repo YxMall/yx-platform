@@ -70,7 +70,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         sysRoleMenuService.remove(new QueryWrapper<SysRoleMenu>().lambda().eq(SysRoleMenu::getRoleId, roleId));
         //删除角色
         int flag = baseMapper.deleteById(roleId);
-        return Result.isDelSuccess(flag > 0);
+        return Result.isSuccess(retBool(flag));
     }
 
     @Override
@@ -81,7 +81,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         int flag = baseMapper.insert(sysRole);
         //添加角色和菜单关系
         sysRoleMenuService.addOrUpdate(sysRole.getRoleId(), sysRole.getMenuIds());
-        return Result.isAddSuccess(true);
+        return Result.isSuccess(true);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         int flag = baseMapper.updateById(sysRole);
         //添加角色和菜单关系
         sysRoleMenuService.addOrUpdate(sysRole.getRoleId(), sysRole.getMenuIds());
-        return Result.isAddSuccess(retBool(flag));
+        return Result.isSuccess(retBool(flag));
     }
 
 

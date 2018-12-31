@@ -70,7 +70,7 @@ public class SysRoleController extends AbstractController {
         return sysRoleService.addRole(sysRole);
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/update")
     @ApiOperation(value = "修改角色", notes = "修改角色信息")
     public Result updateRole(@RequestBody SysRole sysRole) {
         ValidatorUtils.validateEntity(sysRole, UpdateGroup.class);

@@ -92,7 +92,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         int flag = baseMapper.insert(sysUser);
         //更新或者添加用户角色
         sysUserRoleService.addOrUpdateUserRole(sysUser.getUserId(), sysUser.getRoleIds());
-        return Result.isAddSuccess(retBool(flag));
+        return Result.isSuccess(retBool(flag));
     }
 
     @Override
@@ -105,7 +105,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         int flag = baseMapper.updateById(sysUser);
         //更新或者添加用户角色
         sysUserRoleService.addOrUpdateUserRole(sysUser.getUserId(), sysUser.getRoleIds());
-        return Result.isEditSuccess(retBool(flag));
+        return Result.isSuccess(retBool(flag));
     }
 
     @Override
@@ -140,7 +140,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         int flag = baseMapper.deleteById(userId);
         //删除用户角色关联
         sysUserRoleService.remove(new QueryWrapper<SysUserRole>().lambda().eq(SysUserRole::getUserId, userId));
-        return Result.isDelSuccess(retBool(flag));
+        return Result.isSuccess(retBool(flag));
     }
 
     @Override
@@ -150,7 +150,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         //添加用户
         int flag = baseMapper.updateById(sysUser);
-        return Result.isEditSuccess(retBool(flag));
+        return Result.isSuccess(retBool(flag));
     }
 
 }

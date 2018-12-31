@@ -103,7 +103,7 @@ public class SysUserController extends AbstractController {
         return sysUserService.addUser(sysUser);
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/update")
     @ApiOperation(value = "修改用户", notes = "修改用户基本信息")
     public Result updateUser(@RequestBody SysUser sysUser) {
         return sysUserService.updateUser(sysUser);

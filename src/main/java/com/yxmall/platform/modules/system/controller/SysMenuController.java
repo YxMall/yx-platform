@@ -54,12 +54,12 @@ public class SysMenuController extends AbstractController {
         return sysMenuService.getById(id);
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/update")
     @ApiOperation(value = "修改菜单", notes = "根据ID修改菜单")
     private Result updateMenu(@RequestBody SysMenu sysMenu) {
         validateMenu(sysMenu);
         boolean flag = sysMenuService.updateById(sysMenu);
-        return Result.isEditSuccess(flag);
+        return Result.isSuccess(flag);
     }
 
     @PostMapping("/add")
@@ -67,7 +67,7 @@ public class SysMenuController extends AbstractController {
     private Result addMenu(@RequestBody SysMenu sysMenu) {
         validateMenu(sysMenu);
         boolean flag = sysMenuService.save(sysMenu);
-        return Result.isAddSuccess(flag);
+        return Result.isSuccess(flag);
     }
 
 

@@ -60,7 +60,7 @@ public class SysDictIndexController {
     public Result addDictIndex(@RequestBody SysDictIndex dictIndex) {
         ValidatorUtils.validateEntity(dictIndex, UpdateGroup.class);
         dictIndex.setCreateTime(new Date());
-        return Result.isAddSuccess(dictIndexService.save(dictIndex));
+        return Result.isSuccess(dictIndexService.save(dictIndex));
     }
 
     /**
@@ -71,7 +71,7 @@ public class SysDictIndexController {
     public Result updateDictIndex(@RequestBody SysDictIndex dictIndex) {
         ValidatorUtils.validateEntity(dictIndex, UpdateGroup.class);
         dictIndex.setUpdateTime(new Date());
-        return Result.isEditSuccess(dictIndexService.updateById(dictIndex));
+        return Result.isSuccess(dictIndexService.updateById(dictIndex));
     }
 
 
@@ -81,7 +81,7 @@ public class SysDictIndexController {
     @DeleteMapping("/delete/{dictId:\\d+}")
     @ApiOperation(value = "删除数据字典索引表", notes = "根据ID删除数据字典索引表")
     public Result deleteDictIndex(@PathVariable("dictId") Long dictId) {
-        return Result.isDelSuccess(dictIndexService.removeById(dictId));
+        return Result.isSuccess(dictIndexService.removeById(dictId));
     }
 
 

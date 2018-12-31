@@ -38,7 +38,7 @@ public class SysConfigController {
     @DeleteMapping("/delete/{id:\\d+}")
     @ApiOperation(value = "删除系统配置", notes = "根据ID删除系统配置")
     public Result deleteConfig(@PathVariable(name = "id") Long configId) {
-        return Result.isDelSuccess(sysConfigService.removeById(configId));
+        return Result.isSuccess(sysConfigService.removeById(configId));
     }
 
     @PostMapping("/add")
@@ -46,14 +46,14 @@ public class SysConfigController {
     public Result addConfig(@RequestBody SysConfig sysConfig) {
         ValidatorUtils.validateEntity(sysConfig, AddGroup.class);
         sysConfig.setCreateTime(new Date());
-        return Result.isAddSuccess(sysConfigService.save(sysConfig));
+        return Result.isSuccess(sysConfigService.save(sysConfig));
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/update")
     @ApiOperation(value = "修改系统配置", notes = "修改系统配置")
     public Result updateConfig(@RequestBody SysConfig sysConfig) {
         ValidatorUtils.validateEntity(sysConfig, UpdateGroup.class);
-        return Result.isEditSuccess(sysConfigService.updateById(sysConfig));
+        return Result.isSuccess(sysConfigService.updateById(sysConfig));
     }
 
     @GetMapping("/get/{id:\\d+}")

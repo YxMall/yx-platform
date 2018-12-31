@@ -68,7 +68,7 @@ public class NotifyController extends AbstractController {
         ValidatorUtils.validateEntity(notify, AddGroup.class);
         notify.setCreateUserId(getCurrentUserId());
         boolean iRet = notifyService.sendNotify(notify);
-        return Result.isAddSuccess(iRet);
+        return Result.isSuccess(iRet);
     }
 
     /**
@@ -77,7 +77,7 @@ public class NotifyController extends AbstractController {
     @PutMapping("/update")
     @ApiOperation(value = "修改通知", notes = "修改通知信息")
     public Result updateNotify(@RequestBody Notify notify) {
-        return Result.isEditSuccess(notifyService.updateById(notify));
+        return Result.isSuccess(notifyService.updateById(notify));
     }
 
 
@@ -87,7 +87,7 @@ public class NotifyController extends AbstractController {
     @DeleteMapping("/delete/{id:\\d+}")
     @ApiOperation(value = "删除通知", notes = "根据ID删除通知")
     public Result deleteNotify(@PathVariable("id") Long id) {
-        return Result.isDelSuccess(notifyService.removeById(id));
+        return Result.isSuccess(notifyService.removeById(id));
     }
 
 }

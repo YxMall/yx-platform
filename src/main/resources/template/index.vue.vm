@@ -140,12 +140,9 @@
                     type: 'warning'
                 }).then(() => {
                    delete${className}(id).then(res => {
-                        this.$message({
-                        message: res.msg,
-                        type: 'success'
-                    });
+                    this.msgUtil.isDelSuccess(res)
                    this.get${className}TableData();
-              })
+                })
             })
             }
         }

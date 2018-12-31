@@ -59,7 +59,7 @@ public class ${className}Controller {
     @PostMapping("/add")
     @ApiOperation(value = "添加${comments}", notes = "添加${comments}信息")
     public Result add${className}(@RequestBody ${className} ${classname}) {
-        return Result.isAddSuccess(${classname}Service.save(${classname}));
+        return Result.isSuccess(${classname}Service.save(${classname}));
     }
 
     /**
@@ -68,7 +68,7 @@ public class ${className}Controller {
     @PutMapping("/update")
     @ApiOperation(value = "修改${comments}", notes = "修改${comments}信息")
     public Result update${className}(@RequestBody ${className} ${classname}) {
-        return Result.isEditSuccess(${classname}Service.updateById(${classname}));
+        return Result.isSuccess(${classname}Service.updateById(${classname}));
     }
 
 
@@ -78,7 +78,7 @@ public class ${className}Controller {
     @DeleteMapping("/delete/{${pk.attrname}:\\d+}")
     @ApiOperation(value = "删除${comments}", notes = "根据ID删除${comments}")
     public Result delete${className}(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
-        return Result.isDelSuccess(${classname}Service.removeById(${pk.attrname}));
+        return Result.isSuccess(${classname}Service.removeById(${pk.attrname}));
     }
 
 
