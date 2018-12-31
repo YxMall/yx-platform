@@ -12,6 +12,12 @@ import java.util.Date;
 @Data
 public class NotifyRecordVo {
 
+
+    private Long id;
+
+    /**
+     * 通知
+     */
     private Long notifyId;
     /**
      * 标题

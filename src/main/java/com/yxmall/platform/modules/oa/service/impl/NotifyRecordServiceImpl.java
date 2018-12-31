@@ -31,4 +31,9 @@ public class NotifyRecordServiceImpl extends ServiceImpl<NotifyRecordMapper, Not
         IPage<NotifyRecordVo> page = baseMapper.selectNotifyRecordPage(new Query<Notify>(params).getPage(), params);
         return new PageUtils(page);
     }
+
+    @Override
+    public NotifyVo getNotifyDetail(Long id) {
+        return baseMapper.selectNotifyDetail(id);
+    }
 }

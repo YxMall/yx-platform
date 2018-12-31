@@ -32,6 +32,11 @@ public class NotifyVo {
     private Long createUserId;
 
     /**
+     * 阅读状态
+     */
+    private Boolean readStatus;
+
+    /**
      * 创建用户
      */
     private String createUserName;

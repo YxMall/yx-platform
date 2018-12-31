@@ -5,6 +5,7 @@ import com.yxmall.platform.common.utils.PageUtils;
 import com.yxmall.platform.modules.oa.entity.Notify;
 import com.yxmall.platform.modules.oa.entity.NotifyRecord;
 import com.yxmall.platform.modules.oa.form.NotifyForm;
+import com.yxmall.platform.modules.oa.vo.NotifyVo;
 
 import java.util.Map;
 
@@ -23,4 +24,11 @@ public interface NotifyRecordService extends IService<NotifyRecord> {
      * @return
      */
     PageUtils getNotifyRecordListPage(Map<String, Object> params);
+
+    /**
+     * 获取通知详情
+     * @param id
+     * @return
+     */
+    NotifyVo getNotifyDetail(Long id);
 }

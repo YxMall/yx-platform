@@ -3,6 +3,7 @@
 <mapper namespace="com.yxmall.platform.modules.oa.mapper.NotifyRecordMapper">
     <select id="selectNotifyRecordPage" resultType="com.yxmall.platform.modules.oa.vo.NotifyRecordVo">
         SELECT
+        r.id,
         r.notify_id,
         n.title,
         n.content,
@@ -18,9 +19,31 @@
             <if test="params.readStatus!=null and params.readStatus!=''">
                 AND r.read_status=#{params.readStatus}
             </if>
+            <if test="params.status!=null and params.status!=''">
+                AND r.status=#{params.status}
+            </if>
             <if test="params.userId!=null and params.userId!=''">
                 AND r.user_id=#{params.userId}
             </if>
+        </where>
+    </select>
+    <select id="selectNotifyDetail" resultType="com.yxmall.platform.modules.oa.vo.NotifyVo">
+        SELECT
+        r.id,
+        r.notify_id,
+        n.title,
+        n.content,
+        n.create_time,
+        r.read_date,
+        r.read_status,
+        u.username AS create_username,
+        u.avatar
+        FROM
+        oa_notify_record r
+        LEFT JOIN oa_notify n ON ( r.notify_id = n.id )
+        LEFT JOIN sys_user u ON ( n.create_user_id = u.user_id )
+        <where>
+            r.id=#{id}
         </where>
     </select>
 </mapper>

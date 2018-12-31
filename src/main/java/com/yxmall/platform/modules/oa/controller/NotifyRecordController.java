@@ -9,6 +9,7 @@ import com.yxmall.platform.common.validator.ValidatorUtils;
 import com.yxmall.platform.common.validator.group.AddGroup;
 import com.yxmall.platform.common.validator.group.UpdateGroup;
 
+import com.yxmall.platform.modules.oa.vo.NotifyVo;
 import com.yxmall.platform.modules.system.controller.AbstractController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -17,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -54,17 +56,29 @@ public class NotifyRecordController extends AbstractController {
     public Long getUnreadCount() {
         long count = notifyRecordService.count(new QueryWrapper<NotifyRecord>().lambda()
                 .eq(NotifyRecord::getUserId, getCurrentUserId())
-                .eq(NotifyRecord::isReadStatus, false));
+                .eq(NotifyRecord::getReadStatus, false));
         return count;
     }
+
+
+    /**
+     * 修改
+     */
+    @PutMapping("/update")
+    @ApiOperation(value = "修改通知通告发送记录", notes = "修改通知通告发送记录信息")
+    public Result readStatusTag(@RequestBody NotifyRecord record) {
+        notifyRecordService.update(record, new QueryWrapper<NotifyRecord>().lambda().in(!record.getRecordsId().isEmpty(), NotifyRecord::getId, record.getRecordsId()));
+        return Result.success();
+    }
+
 
     /**
      * 信息
      */
-    @RequestMapping("/get/{id:\\d+}")
+    @GetMapping("/get/{id:\\d+}")
     @ApiOperation(value = "通知通告发送记录信息", notes = "根据ID获取通知通告发送记录信息")
-    public Result info(@PathVariable("id") Long id) {
-        return Result.success(notifyRecordService.getById(id));
+    public NotifyVo info(@PathVariable("id") Long id) {
+        return notifyRecordService.getNotifyDetail(id);
     }
 
     /**
@@ -77,22 +91,12 @@ public class NotifyRecordController extends AbstractController {
     }
 
     /**
-     * 修改
-     */
-    @PutMapping("/edit")
-    @ApiOperation(value = "修改通知通告发送记录", notes = "修改通知通告发送记录信息")
-    public Result updateNotifyRecord(@RequestBody NotifyRecord notifyRecord) {
-        return Result.isEditSuccess(notifyRecordService.updateById(notifyRecord));
-    }
-
-
-    /**
      * 删除
      */
-    @DeleteMapping("/delete/{id:\\d+}")
+    @DeleteMapping("/delete")
     @ApiOperation(value = "删除通知通告发送记录", notes = "根据ID删除通知通告发送记录")
-    public Result deleteNotifyRecord(@PathVariable("id") Long id) {
-        return Result.isDelSuccess(notifyRecordService.removeById(id));
+    public Result deleteNotifyRecord(@RequestBody List<Long> recordsId) {
+        return Result.isDelSuccess(notifyRecordService.removeByIds(recordsId));
     }
 
 

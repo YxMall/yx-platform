@@ -17,12 +17,14 @@ public class RestExceptionHandler {
 
     /**
      * 默认异常处理器
-     * @Exception.class 捕获所有异常
+     *
      * @param e
      * @return
+     * @Exception.class 捕获所有异常
      */
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception e) {
+        log.error("程序发生异常：{}", e.getStackTrace());
         return Result.error(e.getLocalizedMessage());
     }
 

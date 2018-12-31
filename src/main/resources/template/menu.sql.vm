@@ -11,6 +11,6 @@ INSERT INTO `sys_menu` ( `parent_id`, `name`, `title`, `path`, `perms`, `type`, 
 INSERT INTO `sys_menu` ( `parent_id`, `name`, `title`, `path`, `perms`, `type`, `icon`, `order_num` )
     SELECT @parentId,null, '新增${comments}', '${moduleName}/${pathName}/add', '${moduleName}:${pathName}:add', '2', '', '6';
 INSERT INTO `sys_menu` ( `parent_id`, `name`, `title`, `path`, `perms`, `type`, `icon`, `order_num` )
-    SELECT @parentId,null, '修改${comments}', '${moduleName}/${pathName}/update', '${moduleName}:${pathName}:edit', '2', '', '6';
+    SELECT @parentId,null, '修改${comments}', '${moduleName}/${pathName}/update', '${moduleName}:${pathName}:update', '2', '', '6';
 INSERT INTO `sys_menu` ( `parent_id`, `name`, `title`, `path`, `perms`, `type`, `icon`, `order_num` )
   SELECT @parentId,null, '删除${comments}', '${moduleName}/${pathName}/delete', '${moduleName}:${pathName}:delete', '2', '', '6';

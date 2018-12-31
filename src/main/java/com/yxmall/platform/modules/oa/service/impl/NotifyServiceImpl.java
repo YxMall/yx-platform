@@ -2,6 +2,7 @@ package com.yxmall.platform.modules.oa.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.Lists;
+import com.yxmall.platform.common.constant.CommonConstant;
 import com.yxmall.platform.common.utils.JsonUtils;
 import com.yxmall.platform.modules.oa.entity.NotifyRecord;
 import com.yxmall.platform.modules.oa.form.NotifyForm;
@@ -72,6 +73,7 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
             NotifyRecord record = new NotifyRecord();
             record.setNotifyId(notifyId);
             record.setUserId(userId);
+            record.setStatus(true);
             return record;
         }).collect(Collectors.toList());
         notifyRecordService.saveBatch(notifyRecords);

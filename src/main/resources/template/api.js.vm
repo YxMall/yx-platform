@@ -15,11 +15,11 @@ export function get${className}Data(params) {
 
 /**
  * 获取${comments}信息
- * @param {${pk.columnName}}  ${pk.comments}
+ * @param {${pk.attrname}}  ${pk.comments}
  */
-export function ${pathName}Info (${pk.columnName}) {
+export function ${pathName}Info (${pk.attrname}) {
     return request({
-        url: '/${moduleName}/${pathName}/get/' + ${pk.columnName},
+        url: '/${moduleName}/${pathName}/get/' + ${pk.attrname},
         method: 'get'
     })
 }
@@ -42,7 +42,7 @@ export function add${className} (params) {
  */
 export function update${className} (params) {
     return request({
-        url: '/${moduleName}/${pathName}/edit',
+        url: '/${moduleName}/${pathName}/update',
         method: 'put',
         data: params
     })
@@ -50,11 +50,11 @@ export function update${className} (params) {
 
 /**
  * 删除${comments}
- * @param {${pk.columnName}}  ${pk.comments}
+ * @param {${pk.attrname}}  ${pk.comments}
  */
-export function delete${className}(${pk.columnName}) {
+export function delete${className}(${pk.attrname}) {
     return request({
-        url: '/${moduleName}/${pathName}/delete/' + ${pk.columnName},
+        url: '/${moduleName}/${pathName}/delete/' + ${pk.attrname},
         method: 'delete'
     })
 }

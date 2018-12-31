@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yxmall.platform.modules.oa.entity.Notify;
 import com.yxmall.platform.modules.oa.entity.NotifyRecord;
 import com.yxmall.platform.modules.oa.vo.NotifyRecordVo;
+import com.yxmall.platform.modules.oa.vo.NotifyVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,4 +29,11 @@ public interface NotifyRecordMapper extends BaseMapper<NotifyRecord> {
      * @return
      */
     IPage<NotifyRecordVo> selectNotifyRecordPage(Page page,@Param("params") Map<String, Object> params);
+
+    /**
+     * 获取通知详情
+     * @return
+     * @param id
+     */
+    NotifyVo selectNotifyDetail(@Param("id") Long id);
 }

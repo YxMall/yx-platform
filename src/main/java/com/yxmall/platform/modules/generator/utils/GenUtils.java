@@ -191,7 +191,7 @@ public class GenUtils {
         }
 
         if (template.contains("api.js.vm")) {
-            return "src" + File.separator + "api" + File.separator + moduleName + File.separator + className.toLowerCase() + ".js";
+            return "src" + File.separator + "api" + File.separator + moduleName + File.separator + className.toLowerCase()+File.separator + "index.js";
         }
 
         return null;

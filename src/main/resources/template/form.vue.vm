@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="!${pathName}Item.id? '新增' : '修改'"
+  <el-dialog :title="!${pathName}Item.${pk.attrname}? '新增' : '修改'"
              :visible.sync="${pathName}FormVisible">
     <el-form ref="${pathName}Form"
              :rules="${pathName}FormRules"
@@ -55,12 +55,12 @@ export default {
     /**
      * 初始化表单
      */
-    initForm (id) {
+    initForm (${pk.attrname}) {
       // 先清除表单信息
-      this.${pathName}Item.id = id || 0
+      this.${pathName}Item.${pk.attrname} = ${pk.attrname} || 0
        // 修改
-      if (this.${pathName}Item.id !== 0) {
-         ${pathName}Info(id).then(res => {
+      if (this.${pathName}Item.${pk.attrname} !== 0) {
+         ${pathName}Info(${pk.attrname}).then(res => {
            this.${pathName}Item = res.data;
          })
        }
@@ -75,7 +75,7 @@ export default {
     submit${className}FormHandle () {
        ${ref}['${pathName}Form'].validate((valid) => {
         if (valid) {
-              if (this.${pathName}Item.id !== 0) {
+              if (this.${pathName}Item.${pk.attrname} !== 0) {
                 update${className}(this.${pathName}Item).then(res => {
                   this.$message({
                     message: res.msg,

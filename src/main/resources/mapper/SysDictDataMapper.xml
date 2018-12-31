@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxmall.platform.modules.system.mapper.SysDictDataMapper">
+
+    <resultMap type="com.yxmall.platform.modules.system.vo.DictVO" id="dictDataMap">
+        <result column="dict_code" property="dictCode"/>
+        <collection property="dictList" ofType="com.yxmall.platform.modules.system.vo.DictDataVo"
+                    column="dict_code">
+            <result column="data_key" property="dataKey"/>
+            <result column="data_value" property="dataValue"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectAllDict" resultMap="dictDataMap">
+          SELECT
+            i.dict_title,
+            i.dict_code,
+            d.data_key,
+            d.data_value
+        FROM
+            sys_dict_index i
+            LEFT JOIN sys_dict_data d ON ( i.dict_code = d.dict_code )
+    </select>
+</mapper>
