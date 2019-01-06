@@ -57,6 +57,7 @@ security:
   ignore:
     urls:
     - /code/*
+    - /auth/login
     - /swagger-ui.html
     - /swagger-resources/**
     - /swagger/**

@@ -13,7 +13,7 @@ public interface SecurityConstant {
     /**
      * JWT签名加密key
      */
-    String JWT_SIGN_KEY = "xboot";
+    String JWT_SIGN_KEY = "yxmall";
 
     /**
      * token参数头
