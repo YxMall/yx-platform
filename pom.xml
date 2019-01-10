@@ -143,6 +143,12 @@
             <groupId>com.qcloud</groupId>
             <artifactId>cos_api</artifactId>
             <version>5.4.5</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- 支持发送邮件 -->
