@@ -1,9 +1,10 @@
 package com.yxmall.platform.modules.tool.oss.controller;
 
 import com.yxmall.platform.common.utils.Result;
-import com.yxmall.platform.modules.tool.oss.constants.OssConstant;
+import com.yxmall.platform.modules.tool.oss.constants.StorageConstant;
 import com.yxmall.platform.modules.tool.oss.storage.OssStorageFactory;
 import com.yxmall.platform.modules.tool.oss.storage.OssStorageService;
+import com.yxmall.platform.modules.tool.oss.utils.StorageUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @description: 文件上传
@@ -31,8 +30,8 @@ public class UploadController {
     public Result upload(@RequestParam  MultipartFile file) throws IOException {
         //生成随机文件名
         //获取文件后缀
-        String fileSuffixName = OssStorageService.getFileSuffixName(file.getOriginalFilename());
-        String path = OssStorageService.generateFileName(OssConstant.FILE_UPLOAD_PREFIX, fileSuffixName);
+        String fileSuffixName = StorageUtils.getFileSuffixName(file.getOriginalFilename());
+        String path = StorageUtils.generateFileName(StorageConstant.FILE_UPLOAD_PREFIX, fileSuffixName);
         String result = OssStorageFactory.build().upload(file, path);
         return Result.success("上传成功", result);
 

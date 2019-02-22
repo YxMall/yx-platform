@@ -2,6 +2,7 @@ package com.yxmall.platform.modules.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yxmall.platform.common.utils.PageUtils;
+import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.modules.system.entity.SysConfig;
 import com.yxmall.platform.modules.system.entity.SysMenu;
 
@@ -14,17 +15,9 @@ import java.util.Map;
  */
 public interface SysConfigService extends IService<SysConfig> {
 
-    /**
-     * 分页查询
-     *
-     * @param params
-     * @return
-     */
-    PageUtils getConfigListPage(Map<String, Object> params);
-
 
     /**
-     * 根据ID获取系统配置
+     * 根据key获取当前使用系统配置
      *
      * @param key 配置key
      * @return

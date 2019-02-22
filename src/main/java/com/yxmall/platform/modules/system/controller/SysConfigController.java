@@ -22,43 +22,24 @@ import java.util.Map;
  * Time:下午4:42
  */
 @RestController
-@RequestMapping("config")
-@Api(value = "系统配制接口", description = "包含系统配制一系列操作")
+@RequestMapping("/sys/config")
+@Api(value = "系统配置接口", description = "包含系统配制一系列操作")
 public class SysConfigController {
 
     @Autowired
     private SysConfigService sysConfigService;
 
-    @GetMapping("/list")
-    @ApiOperation(value = "查询", notes = "根据User对象创建用户")
-    public PageUtils getConfigListPage(@RequestParam Map<String, Object> params) {
-        return sysConfigService.getConfigListPage(params);
+    @PostMapping("/getConfig")
+    @ApiOperation(value = "查询配置信息", notes = "根据key查询对应的配置信息")
+    public Result getConfigList(@RequestBody String key) {
+        return Result.success(sysConfigService.getSysConfigByKey(key));
     }
 
-    @DeleteMapping("/delete/{id:\\d+}")
-    @ApiOperation(value = "删除系统配置", notes = "根据ID删除系统配置")
-    public Result deleteConfig(@PathVariable(name = "id") Long configId) {
-        return Result.isSuccess(sysConfigService.removeById(configId));
-    }
-
-    @PostMapping("/add")
-    @ApiOperation(value = "添加系统配置", notes = "添加系统配置")
-    public Result addConfig(@RequestBody SysConfig sysConfig) {
+    @PostMapping("/saveOrUpdate")
+    @ApiOperation(value = "保存或者修改系统配置", notes = "保存或者修改系统配置并且使用")
+    public Result saveOrUpdate(@RequestBody SysConfig sysConfig) {
         ValidatorUtils.validateEntity(sysConfig, AddGroup.class);
-        sysConfig.setCreateTime(new Date());
-        return Result.isSuccess(sysConfigService.save(sysConfig));
+        return Result.isSuccess(sysConfigService.saveOrUpdate(sysConfig));
     }
 
-    @PutMapping("/update")
-    @ApiOperation(value = "修改系统配置", notes = "修改系统配置")
-    public Result updateConfig(@RequestBody SysConfig sysConfig) {
-        ValidatorUtils.validateEntity(sysConfig, UpdateGroup.class);
-        return Result.isSuccess(sysConfigService.updateById(sysConfig));
-    }
-
-    @GetMapping("/get/{id:\\d+}")
-    @ApiOperation(value = "角色信息", notes = "根据ID获取角色信息")
-    public SysConfig configInfo(@PathVariable(name = "id") Long configId) {
-        return sysConfigService.getById(configId);
-    }
 }

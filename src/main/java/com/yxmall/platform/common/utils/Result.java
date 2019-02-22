@@ -121,4 +121,22 @@ public class Result extends HashMap<String, Object> {
         super.put(key, value);
         return this;
     }
+
+    /**
+     * 是否成功
+     *
+     * @return
+     */
+    public boolean isSuccess() {
+        return this.get("code").equals(ResponseStatusEnum.SUCCESS.getCode());
+    }
+
+    /**
+     * 是否失败
+     *
+     * @return
+     */
+    public boolean isError() {
+        return !this.get("code").equals(ResponseStatusEnum.SUCCESS.getCode());
+    }
 }

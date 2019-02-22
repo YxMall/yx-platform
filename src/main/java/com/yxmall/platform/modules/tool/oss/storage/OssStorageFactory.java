@@ -5,7 +5,7 @@ import com.yxmall.platform.common.utils.JsonUtils;
 import com.yxmall.platform.common.utils.SpringBeanUtils;
 import com.yxmall.platform.modules.system.entity.SysConfig;
 import com.yxmall.platform.modules.system.service.SysConfigService;
-import com.yxmall.platform.modules.tool.oss.constants.OssConstant;
+import com.yxmall.platform.modules.tool.oss.constants.StorageConstant;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -20,7 +20,7 @@ public class OssStorageFactory {
 
 
     static {
-        SysConfig config = SpringBeanUtils.getBean(SysConfigService.class).getSysConfigByKey("ossConfigKey");
+        SysConfig config = SpringBeanUtils.getBean(SysConfigService.class).getSysConfigByKey(StorageConstant.STORAGE_CONFIG_KEY);
         try {
             log.info("oss配置信息：{}",config.getConfigValue());
             ossConfig = JsonUtils.jsonToObj(config.getConfigValue(), OssStorageConfig.class);
@@ -39,9 +39,9 @@ public class OssStorageFactory {
         OssStorageService ossStorageService = null;
         //oss类型
         Integer ossType = ossConfig.getOssType();
-        if (ossType.equals(OssConstant.ALIYUN_OSS)) {
+        if (ossType.equals(StorageConstant.ALIYUN_OSS)) {
             ossStorageService = new AliyunOssStorageService(ossConfig);
-        } else if (ossType.equals(OssConstant.QCLOUD_OSS)) {
+        } else if (ossType.equals(StorageConstant.QCLOUD_OSS)) {
             ossStorageService = new QCloudOssStorageService(ossConfig);
         }
         return ossStorageService;

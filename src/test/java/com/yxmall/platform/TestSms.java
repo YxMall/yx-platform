@@ -2,6 +2,9 @@ package com.yxmall.platform;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.qcloudsms.SmsSingleSender;
+import com.github.qcloudsms.SmsSingleSenderResult;
+import com.github.qcloudsms.httpclient.HTTPException;
 import com.yxmall.platform.common.utils.JsonUtils;
 import com.yxmall.platform.common.utils.TimeUtils;
 import com.yxmall.platform.modules.tool.oss.storage.OssStorageConfig;
@@ -16,6 +19,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.ResourceUtils;
@@ -32,40 +36,40 @@ import java.util.List;
  * @create: 2018-09-12 16:14
  **/
 public class TestSms {
-    public static void main(String[] args) throws IOException {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String password = "123456";
-        String encodedPassword = encoder.encode(password);
-        System.out.println(encodedPassword);
-//        SysUser user= JMockData.mock(SysUser.class);
-//        System.out.println(user);
-
-        CloseableHttpClient client = HttpClients.createDefault();
-        HttpPost post = new HttpPost("https://vip.veesing.com/smsApi/verifyCode");
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("appId", "CCT1VKZB9U25"));
-        params.add(new BasicNameValuePair("appKey", "TK8HX220RJYAB70A"));
-        params.add(new BasicNameValuePair("phone", "17521698619"));
-        params.add(new BasicNameValuePair("templateId", "78"));
-        params.add(new BasicNameValuePair("variables", "1123;马马;你吃饭了吗"));
-        UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(params);
-        post.setEntity(urlEncodedFormEntity);
-        try {
-            CloseableHttpResponse execute = client.execute(post);
-            HttpEntity entity = execute.getEntity();
-            System.out.println(EntityUtils.toString(entity, "UTF-8"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        JSONObject smsJSon = SmsCode.sendSmsCode("CCT1VKZB9U25", "TK8HX220RJYAB70A", "17521698619", "78", "1123;马马;你吃饭了吗");
-//        System.out.println(smsJSon.toJSONString());
-
-//        String jsonData = FileUtils.readFileToString(ResourceUtils.
-//                getFile("classpath:menu.json"), Charset.forName("UTF-8"));
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        JsonNode jsonNode = objectMapper.readTree(jsonData);
-//        System.out.println(jsonNode);
-    }
+//    public static void main(String[] args) throws IOException {
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        String password = "123456";
+//        String encodedPassword = encoder.encode(password);
+//        System.out.println(encodedPassword);
+////        SysUser user= JMockData.mock(SysUser.class);
+////        System.out.println(user);
+//
+//        CloseableHttpClient client = HttpClients.createDefault();
+//        HttpPost post = new HttpPost("https://vip.veesing.com/smsApi/verifyCode");
+//        List<NameValuePair> params = new ArrayList<NameValuePair>();
+//        params.add(new BasicNameValuePair("appId", "CCT1VKZB9U25"));
+//        params.add(new BasicNameValuePair("appKey", "TK8HX220RJYAB70A"));
+//        params.add(new BasicNameValuePair("phone", "17521698619"));
+//        params.add(new BasicNameValuePair("templateId", "78"));
+//        params.add(new BasicNameValuePair("variables", "1123;马马;你吃饭了吗"));
+//        UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(params);
+//        post.setEntity(urlEncodedFormEntity);
+//        try {
+//            CloseableHttpResponse execute = client.execute(post);
+//            HttpEntity entity = execute.getEntity();
+//            System.out.println(EntityUtils.toString(entity, "UTF-8"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+////        JSONObject smsJSon = SmsCode.sendSmsCode("CCT1VKZB9U25", "TK8HX220RJYAB70A", "17521698619", "78", "1123;马马;你吃饭了吗");
+////        System.out.println(smsJSon.toJSONString());
+//
+////        String jsonData = FileUtils.readFileToString(ResourceUtils.
+////                getFile("classpath:menu.json"), Charset.forName("UTF-8"));
+////        ObjectMapper objectMapper = new ObjectMapper();
+////        JsonNode jsonNode = objectMapper.readTree(jsonData);
+////        System.out.println(jsonNode);
+//    }
 
     @Test
     public void redisTest() {
@@ -76,17 +80,37 @@ public class TestSms {
         System.out.println(s);
     }
 
-    @Test
-    public void jsonTest() throws Exception {
-        String str = "{\n" +
-                "\"ossType\": 1,\n" +
-                "\"endpoint\": \"oss-cn-beijing.aliyuncs.com\",\n" +
-                "\"accessKeyId\": \"LTAIqRHCKGq7maHb\",\n" +
-                "\"accessKeySecret\": \"okIHeSC7qFftR9FKsEzL7OyA9EVF7L\",\n" +
-                "\"bucketName\": \"superadmin\",\n" +
-                "\"domain\": \"https://superadmin.oss-cn-beijing.aliyuncs.com\"\n" +
-                "}";
-        OssStorageConfig ossStorageConfig = JsonUtils.jsonToObj(str, OssStorageConfig.class);
+    public static void main(String[] args) {
+        // 短信应用SDK AppID
+        int appid = 1400176015; // 1400开头
 
+        // 短信应用SDK AppKey
+        String appkey = "53a4d427318c1f59f74c1a1f05d0133c";
+
+        // 需要发送短信的手机号码
+        String[] phoneNumbers = {"17521698619"};
+
+        // 短信模板ID，需要在短信应用中申请
+        int templateId = 266130; // NOTE: 这里的模板ID`7839`只是一个示例，真实的模板ID需要在短信控制台中申请
+        //templateId7839对应的内容是"您的验证码是: {1}"
+        // 签名
+        String smsSign = "王庆知识分享"; // NOTE: 这里的签名"腾讯云"只是一个示例，真实的签名需要在短信控制台中申请，另外签名参数使用的是`签名内容`，而不是`签名ID`
+        try {
+            String[] params = {"5678"};//数组具体的元素个数和模板中变量个数必须一致，例如事例中templateId:5678对应一个变量，参数数组中元素个数也必须是一个
+            SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
+            SmsSingleSenderResult result = ssender.sendWithParam("86", phoneNumbers[0],
+                    templateId, params, smsSign, "", "");  // 签名参数未提供或者为空时，会使用默认签名发送短信
+            System.out.println(result);
+        } catch (HTTPException e) {
+            // HTTP响应码错误
+            e.printStackTrace();
+        } catch (org.json.JSONException e) {
+            // json解析错误
+            e.printStackTrace();
+        } catch (IOException e) {
+            // 网络IO错误
+            e.printStackTrace();
+        }
     }
+
 }

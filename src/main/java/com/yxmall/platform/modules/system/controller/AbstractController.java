@@ -1,17 +1,12 @@
 package com.yxmall.platform.modules.system.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.yxmall.platform.common.security.UserDetailsImpl;
-import com.yxmall.platform.common.utils.Result;
+import com.yxmall.platform.security.UserDetailsImpl;
 import com.yxmall.platform.common.utils.SpringBeanUtils;
 import com.yxmall.platform.modules.system.entity.SysUser;
 import com.yxmall.platform.modules.system.service.SysUserService;
-import com.yxmall.platform.modules.system.vo.UserVO;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 /**
  * @description:

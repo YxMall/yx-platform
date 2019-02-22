@@ -25,7 +25,6 @@ public class SysConfig {
     @TableId
     private Long configId;
 
-
     /**
      * 配置key
      */
@@ -38,6 +37,7 @@ public class SysConfig {
     @NotBlank(message = "配置value不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private String configValue;
 
+
     /**
      * 状态
      */
@@ -48,10 +48,5 @@ public class SysConfig {
      */
     private String remark;
 
-
-    /**
-     * 创建时间
-     **/
-    private Date createTime;
 
 }

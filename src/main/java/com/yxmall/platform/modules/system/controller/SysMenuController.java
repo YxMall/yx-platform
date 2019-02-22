@@ -28,7 +28,7 @@ import java.util.List;
  * @since 2018-09-27 10:14:05
  */
 @RestController
-@RequestMapping("menu")
+@RequestMapping("/sys/menu")
 @Api(value = "系统菜单接口", description = "包含系统功能菜单获取")
 public class SysMenuController extends AbstractController {
 

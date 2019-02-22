@@ -58,6 +58,7 @@ security:
     urls:
     - /code/*
     - /auth/login
+    - mobile/login
     - /swagger-ui.html
     - /swagger-resources/**
     - /swagger/**
@@ -69,3 +70,4 @@ security:
     - /endpointChat/**
     - /generator/**
     - /test/**
+    - /sys/file/**

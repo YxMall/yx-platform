@@ -21,6 +21,7 @@ import com.yxmall.platform.modules.system.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public UserVO getUserByUserName(String username) {
         UserVO user = baseMapper.selectUserByName(username);
+        user = this.setUserPermsList(user);
+        return user;
+    }
+
+
+    /**
+     * 设置用户权限
+     *
+     * @param user
+     * @return
+     */
+    protected UserVO setUserPermsList(UserVO user) {
         if (user != null) {
             Long userId = user.getUserId();
             Set<String> permsList;
@@ -72,6 +85,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 permsList = sysMenuService.getPermsByUserId(userId);
             }
             user.setPermsList(permsList);
+        }
+        return user;
+    }
+
+
+    @Override
+    public UserVO getUserByUserMobile(String mobile) {
+        SysUser sysUser = this.getOne(new QueryWrapper<SysUser>().lambda().eq(SysUser::getMobile, mobile));
+        UserVO user = null;
+        user = this.setUserPermsList(user);
+        if (null != sysUser) {
+            user = new UserVO();
+            BeanUtils.copyProperties(sysUser, user);
+            user = this.setUserPermsList(user);
+            return user;
         }
         return user;
     }
@@ -124,7 +152,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Boolean checkUserName(SysUser sysUser) {
         String username = sysUser.getUsername();
         UserVO userVO = baseMapper.selectUserByName(username);
-        if (null==userVO || sysUser.getUserId().equals(userVO.getUserId())) {
+        if (null == userVO || sysUser.getUserId().equals(userVO.getUserId())) {
             return true;
         }
         return false;
@@ -152,5 +180,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         int flag = baseMapper.updateById(sysUser);
         return Result.isSuccess(retBool(flag));
     }
+
 
 }

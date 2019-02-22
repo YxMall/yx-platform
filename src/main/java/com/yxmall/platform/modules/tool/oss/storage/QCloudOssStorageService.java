@@ -4,10 +4,7 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
-import com.qcloud.cos.model.ObjectMetadata;
-import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.PutObjectResult;
-import com.qcloud.cos.model.StorageClass;
+import com.qcloud.cos.model.*;
 import com.qcloud.cos.region.Region;
 import com.yxmall.platform.common.exception.BaseException;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +30,7 @@ public class QCloudOssStorageService extends OssStorageService {
         // 1 初始化用户身份信息(secretId, secretKey)
         COSCredentials cred = new BasicCOSCredentials(config.getAccessKeyId(), config.getAccessKeySecret());
         // 2 设置bucket的区域, COS地域的简称请参照 https://www.qcloud.com/document/product/436/6224
-        ClientConfig clientConfig = new ClientConfig(new Region(config.getEndpoint()));
+        ClientConfig clientConfig = new ClientConfig(new Region(config.getRegion()));
         client = new COSClient(cred, clientConfig);
     }
 
@@ -67,5 +64,20 @@ public class QCloudOssStorageService extends OssStorageService {
          */
         return config.getDomain() + path;
 
+    }
+
+    @Override
+    public InputStream download(String path) {
+        GetObjectRequest getObjectRequest = new GetObjectRequest(config.getBucketName(), path);
+        COSObject object = client.getObject(getObjectRequest);
+        COSObjectInputStream objectContent = object.getObjectContent();
+        return objectContent;
+    }
+
+    @Override
+    public void delete(String path) {
+        // 指定文件所在的存储桶
+        // 指定文件在 COS 上的对象键
+        client.deleteObject(config.getBucketName(), path);
     }
 }

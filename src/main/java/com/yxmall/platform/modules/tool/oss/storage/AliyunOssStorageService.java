@@ -1,7 +1,8 @@
 package com.yxmall.platform.modules.tool.oss.storage;
 
 import com.aliyun.oss.OSSClient;
-import com.qcloud.cos.model.ObjectMetadata;
+import com.aliyun.oss.model.OSSObject;
+import com.aliyun.oss.model.ObjectMetadata;
 import com.yxmall.platform.common.exception.BaseException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,5 +41,17 @@ public class AliyunOssStorageService extends OssStorageService {
         }
 
         return config.getDomain() + "/" + path;
+    }
+
+    @Override
+    public InputStream download(String path) {
+        // ossObject包含文件所在的存储空间名称、文件名称、文件元信息以及一个输入流。
+        OSSObject ossObject = client.getObject(config.getBucketName(), path);
+        return ossObject.getObjectContent();
+    }
+
+    @Override
+    public void delete(String path) {
+        client.deleteObject(config.getBucketName(), path);
     }
 }

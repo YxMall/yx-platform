@@ -12,6 +12,9 @@ import com.yxmall.platform.modules.system.entity.SysUser;
 import com.yxmall.platform.modules.system.service.SysMenuService;
 import com.yxmall.platform.modules.system.service.SysUserService;
 import com.yxmall.platform.modules.system.vo.UserVO;
+import com.yxmall.platform.modules.tool.oss.constants.StorageConstant;
+import com.yxmall.platform.modules.tool.oss.storage.OssStorageFactory;
+import com.yxmall.platform.modules.tool.oss.utils.StorageUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
@@ -19,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.FileNotFoundException;
@@ -34,7 +38,7 @@ import java.util.Map;
  * @since 2018-09-12 17:13:32
  */
 @RestController
-@RequestMapping("user")
+@RequestMapping("/sys/user")
 @Api(value = "系统用户接口", description = "包含系统用户创建，新增，修改，删除等接口")
 public class SysUserController extends AbstractController {
     /**
@@ -123,4 +127,14 @@ public class SysUserController extends AbstractController {
         return sysUserService.checkUserName(sysUser);
     }
 
+
+    @PostMapping("avatarUpload")
+    @ApiOperation(value = "文件上传", notes = "上传文件，返回预览地址")
+    public Result upload(@RequestParam MultipartFile file) throws IOException {
+        //生成随机文件名
+        String fileSuffixName = StorageUtils.getFileSuffixNamePoint(file.getOriginalFilename());
+        String path = StorageUtils.generateFileName(StorageConstant.AVATAR_UPLOAD_PREFIX, fileSuffixName);
+        String result = OssStorageFactory.build().upload(file, path);
+        return Result.success("上传成功", result);
+    }
 }

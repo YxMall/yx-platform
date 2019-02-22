@@ -27,7 +27,7 @@ import java.util.Map;
  * @since 2018-09-27 10:14:05
  */
 @RestController
-@RequestMapping("role")
+@RequestMapping("/sys/role")
 @Api(value = "系统角色接口", description = "包含系统角色获取")
 public class SysRoleController extends AbstractController {
     /**

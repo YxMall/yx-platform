@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/yxmall_platform?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false
-    username: root
-    password: root
+    username: 8L+2eJHnH8X1x0Mo/gWiLw==
+    password: v+8YqILwLPO17EUP58VU3Q==
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       minimum-idle: 5
@@ -25,6 +25,11 @@ spring:
         max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
         max-idle: 10      # 连接池中的最大空闲连接
         min-idle: 5       # 连接池中的最小空闲连接
+
+# 加密所需的salt(盐)
+jasypt:
+  encryptor:
+    password: G0CvDz7oJn6
 
 aliyun:
   sms:

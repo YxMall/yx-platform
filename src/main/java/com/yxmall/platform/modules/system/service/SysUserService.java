@@ -58,6 +58,7 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 获取用户信息
+     *
      * @param userId
      * @return
      */
@@ -65,6 +66,7 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 检查用户名是否存在
+     *
      * @param sysUser
      * @return
      */
@@ -73,6 +75,7 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 删除用户
+     *
      * @param userId
      * @return
      */
@@ -80,8 +83,17 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 修改当前用户信息
+     *
      * @param sysUser
      * @return
      */
     Result updateCurrentUserInfo(SysUser sysUser);
+
+    /**
+     * 查询用户信息
+     *
+     * @param mobile 手机号
+     * @return
+     */
+    UserVO getUserByUserMobile(String mobile);
 }

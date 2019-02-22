@@ -1,7 +1,5 @@
 package com.yxmall.platform;
 
-import com.github.jsonzou.jmockdata.JMockData;
-import com.github.jsonzou.jmockdata.MockConfig;
 import com.yxmall.platform.common.utils.RedisUtils;
 import com.yxmall.platform.common.utils.TimeUtils;
 import com.yxmall.platform.modules.system.entity.SysRole;

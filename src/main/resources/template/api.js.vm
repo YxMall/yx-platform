@@ -1,12 +1,15 @@
 import request from '@/plugin/axios'
 
+// 路径前缀
+const PREFIX_URL = '/${moduleName}/${pathName}/'
+
 /**
  * 获取${comments}分页信息
  * @param {*} params
  */
 export function get${className}Data(params) {
     return request({
-        url: '/${moduleName}/${pathName}/list',
+        url: `${PREFIX_URL}list`,
         method: 'get',
         params
     })
@@ -19,7 +22,7 @@ export function get${className}Data(params) {
  */
 export function ${pathName}Info (${pk.attrname}) {
     return request({
-        url: '/${moduleName}/${pathName}/get/' + ${pk.attrname},
+        url `${PREFIX_URL}get/${${pk.attrname}}`,
         method: 'get'
     })
 }
@@ -30,7 +33,7 @@ export function ${pathName}Info (${pk.attrname}) {
  */
 export function add${className} (params) {
     return request({
-        url: '/${moduleName}/${pathName}/add',
+        url: `${PREFIX_URL}add`,
         method: 'post',
         data: params
     })
@@ -42,7 +45,7 @@ export function add${className} (params) {
  */
 export function update${className} (params) {
     return request({
-        url: '/${moduleName}/${pathName}/update',
+        url: `${PREFIX_URL}update`,
         method: 'put',
         data: params
     })
@@ -54,7 +57,7 @@ export function update${className} (params) {
  */
 export function delete${className}(${pk.attrname}) {
     return request({
-        url: '/${moduleName}/${pathName}/delete/' + ${pk.attrname},
+        url: `${PREFIX_URL}delete/${${pk.attrname}}`,
         method: 'delete'
     })
 }
