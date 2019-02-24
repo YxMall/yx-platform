@@ -104,30 +104,39 @@ public class Result extends HashMap<String, Object> {
         return r;
     }
 
+
     /**
-     * 新增是否成功
+     * 是否成功
      *
      * @param flag
      * @return
      */
-    public static Result isAddSuccess(boolean flag) {
-        return flag ? Result.success(CommonConstant.Message.ADD_SUCCESS.getMsg()) :
-                Result.error(CommonConstant.Message.ADD_ERROR.getMsg());
-    }
-
-    public static Result isDelSuccess(boolean flag) {
-        return flag ? Result.success(CommonConstant.Message.DEL_SUCCESS.getMsg()) :
-                Result.error(CommonConstant.Message.DEL_ERROR.getMsg());
-    }
-
-    public static Result isEditSuccess(boolean flag) {
-        return flag ? Result.success(CommonConstant.Message.EDIT_SUCCESS.getMsg()) :
-                Result.error(CommonConstant.Message.EDIT_ERROR.getMsg());
+    public static Result isSuccess(boolean flag) {
+        return flag ? Result.success() :
+                Result.error();
     }
 
     @Override
     public Result put(String key, Object value) {
         super.put(key, value);
         return this;
+    }
+
+    /**
+     * 是否成功
+     *
+     * @return
+     */
+    public boolean isSuccess() {
+        return this.get("code").equals(ResponseStatusEnum.SUCCESS.getCode());
+    }
+
+    /**
+     * 是否失败
+     *
+     * @return
+     */
+    public boolean isError() {
+        return !this.get("code").equals(ResponseStatusEnum.SUCCESS.getCode());
     }
 }

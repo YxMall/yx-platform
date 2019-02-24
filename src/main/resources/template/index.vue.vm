@@ -1,0 +1,153 @@
+<template>
+    <d2-container>
+        <template slot="header">
+            <el-form :inline="true"
+                     class="d2-pl-15 d2-pt-15"
+                     ref="params">
+                <el-form-item label="参数名"
+                              prop="key">
+                    <el-input placeholder="输入参数名进行过滤"
+                              v-model="params.key">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary"
+                               v-show="isAuth('${moduleName}:${pathName}:list')"
+                               @keyup.enter.native="get${className}TableData"
+                               @click="get${className}TableData">
+                        <d2-icon name="search" />
+                        查询
+                    </el-button>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="this.$refs.params.resetFields()">
+                        <d2-icon name="refresh" />
+                        重置
+                    </el-button>
+                </el-form-item>
+            </el-form>
+            <el-button-group>
+                <el-button type="primary"
+                           v-show="isAuth('${moduleName}:${pathName}:add')"
+                           @click="addOrUpdateHandle(0)">
+                    <d2-icon name="plus" />
+                    添加
+                </el-button>
+            </el-button-group>
+        </template>
+        <el-table :data="${pathName}List"
+                  border
+                  stripe
+                  class="d2-pt-5"
+                  style="width: 100%;">
+          #foreach($column in $columns)
+              <el-table-column
+                      prop="${column.attrname}"
+                      header-align="center"
+                      align="center"
+                      label="${column.comments}">
+              </el-table-column>
+          #end
+            <el-table-column header-align="center"
+                             align="center"
+                             width="300"
+                             label="操作">
+                <template slot-scope="scope">
+                    <el-button size="small"
+                               type="primary"
+                               v-show="isAuth('${moduleName}:${pathName}:update')"
+                               @click="addOrUpdateHandle(scope.row.${pk.attrname})">
+                        <d2-icon name='edit' />
+                        修改</el-button>
+                    <el-button size="small"
+                               type="danger"
+                               v-show="isAuth('${moduleName}:${pathName}:delete')"
+                               @click="delete${className}Handle(scope.row.${pk.attrname})">
+                        <d2-icon name='trash' />
+                        删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <template slot="footer">
+            <el-pagination @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
+                           :current-page="params.currPage"
+                           :page-sizes="[10, 20, 30, 40]"
+                           :page-size="10"
+                           layout="total, sizes, prev, pager, next, jumper"
+                           :total="params.totalCount">
+            </el-pagination>
+        </template>
+        <${pathName}-form v-if="${pathName}FormVisible"
+        @refreshDataList='get${className}TableData'
+        ref="${pathName}Form">
+    </${pathName}-form>
+    </d2-container>
+</template>
+
+<script>
+    import  ${pathName}Form from './${pathName}-form';
+    import { get${className}Data, delete${className} } from '@/api/${moduleName}/${pathName}';
+    export default {
+        name: '${pathName}',
+        components: {
+            ${pathName}Form
+        },
+        data () {
+            return {
+                ${pathName}List: [],
+                ${pathName}FormVisible: false,
+                params: {
+                    key: '',
+                    totalCount: 0,
+                    currPage: 1,
+                    pageSize: 10
+                }
+            };
+        },
+        mounted () {
+            this.get${className}TableData();
+        },
+        methods: {
+            handleSizeChange (val) {
+                this.params.pageSize = val;
+                this.get${className}TableData();
+            },
+            handleCurrentChange (val) {
+                this.params.currPage = val;
+                this.get${className}TableData();
+            },
+            get${className}TableData () {
+                get${className}Data(this.params).then(res => {
+                    const { list, totalCount } = res
+                    this.${pathName}List = list
+                    this.params.totalCount = totalCount;
+            })
+            },
+            /**
+             * 打开表单
+             */
+            addOrUpdateHandle (id) {
+                this.${pathName}FormVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.${pathName}Form.initForm(id)
+            })
+            },
+            delete${className}Handle (id) {
+                this.$confirm('此操作将永久ID为[' + id + ']删除, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                   delete${className}(id).then(res => {
+                    this.msgUtil.isDelSuccess(res)
+                   this.get${className}TableData();
+                })
+            })
+            }
+        }
+    }
+</script>
+
+<style>
+</style>

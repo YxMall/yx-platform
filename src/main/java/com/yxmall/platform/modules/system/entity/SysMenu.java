@@ -45,6 +45,7 @@ public class SysMenu extends Model<SysMenu> {
     /**
      * 菜单URL
      **/
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String path;
     /**
      * 授权(多个用逗号分隔，如：user:list,user:create)
@@ -66,7 +67,6 @@ public class SysMenu extends Model<SysMenu> {
 
 
     @TableField(exist = false)
-    //为空时不惨与序列化
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SysMenu> children;
 

@@ -10,6 +10,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author qing.wang.o
+ */
 @Data
 public class UserVO implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -20,6 +23,12 @@ public class UserVO implements Serializable {
      **/
 
     private String username;
+
+    /**
+     * 昵称
+     */
+    private String nickName;
+
     /**
      * 密码
      **/
@@ -29,7 +38,7 @@ public class UserVO implements Serializable {
      * 盐
      **/
 
-    private String salt;
+    private String avatar;
     /**
      * 邮箱
      **/
@@ -41,10 +50,15 @@ public class UserVO implements Serializable {
 
     private String mobile;
     /**
+     * 性别  true: 男 false:女
+     */
+    private Boolean gender;
+
+    /**
      * 状态  0：禁用   1：正常
      **/
 
-    private Integer status;
+    private Boolean status;
     /**
      * 创建者ID
      **/
@@ -55,7 +69,6 @@ public class UserVO implements Serializable {
      **/
 
     private Date createTime;
-
 
     /**
      * 功能权限列表

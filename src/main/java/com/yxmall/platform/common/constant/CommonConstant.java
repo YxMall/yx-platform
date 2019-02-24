@@ -23,19 +23,6 @@ public interface CommonConstant {
     Integer USER_NORMAL_STATUS = 1;
 
 
-    @AllArgsConstructor
-    public enum Message {
-        ADD_SUCCESS("添加成功"),
-        ADD_ERROR("添加失败"),
-        EDIT_SUCCESS("修改成功"),
-        EDIT_ERROR("修改失败"),
-        DEL_SUCCESS("删除成功"),
-        DEL_ERROR("删除失败");
-        @Getter
-        private String msg;
-    }
-
-
     /**
      * 菜单枚举类
      */

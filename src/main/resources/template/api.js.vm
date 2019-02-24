@@ -1,0 +1,63 @@
+import request from '@/plugin/axios'
+
+// 路径前缀
+const PREFIX_URL = '/${moduleName}/${pathName}/'
+
+/**
+ * 获取${comments}分页信息
+ * @param {*} params
+ */
+export function get${className}Data(params) {
+    return request({
+        url: `${PREFIX_URL}list`,
+        method: 'get',
+        params
+    })
+}
+
+
+/**
+ * 获取${comments}信息
+ * @param {${pk.attrname}}  ${pk.comments}
+ */
+export function ${pathName}Info (${pk.attrname}) {
+    return request({
+        url `${PREFIX_URL}get/${${pk.attrname}}`,
+        method: 'get'
+    })
+}
+
+/**
+ * 添加${comments}
+ * @param  params
+ */
+export function add${className} (params) {
+    return request({
+        url: `${PREFIX_URL}add`,
+        method: 'post',
+        data: params
+    })
+}
+
+/**
+ * 修改${comments}
+ * @param  params
+ */
+export function update${className} (params) {
+    return request({
+        url: `${PREFIX_URL}update`,
+        method: 'put',
+        data: params
+    })
+}
+
+/**
+ * 删除${comments}
+ * @param {${pk.attrname}}  ${pk.comments}
+ */
+export function delete${className}(${pk.attrname}) {
+    return request({
+        url: `${PREFIX_URL}delete/${${pk.attrname}}`,
+        method: 'delete'
+    })
+}

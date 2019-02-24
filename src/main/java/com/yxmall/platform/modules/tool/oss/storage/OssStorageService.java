@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,36 +23,6 @@ public abstract class OssStorageService {
      */
     OssStorageConfig config;
 
-    /**
-     * 生成文件名 包含路径 防止重复
-     *
-     * @param prefix 前缀
-     * @param suffix 后缀
-     * @return
-     */
-    public static String generateFileName(String prefix, String suffix) {
-        //生成uuid
-        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        //文件路径
-        String path = TimeUtils.parseTime(LocalDateTime.now(), TimeUtils.TimeFormat.SHORT_DATE_PATTERN_NONE) + "/" + uuid;
-        if (StringUtils.isNotBlank(prefix)) {
-            path = prefix + '/' + path;
-        }
-        return path + suffix;
-    }
-
-
-    /**
-     * 获取文件名后缀 包含.
-     *
-     * @param fileName 文件
-     * @return
-     */
-    public static String getFileSuffixName(String fileName) {
-        String suffix = fileName.substring(fileName.lastIndexOf("."));
-        return suffix;
-    }
-
 
     /**
      * 文件上传
@@ -61,4 +32,21 @@ public abstract class OssStorageService {
      * @return
      */
     public abstract String upload(MultipartFile file, String path);
+
+
+    /**
+     * 下载文件
+     *
+     * @param path 相对于存储系统的路径
+     * @return
+     */
+    public abstract InputStream download(String path);
+
+    /**
+     * 删除文件
+     *
+     * @param path 相对于存储系统的路径
+     * @return
+     */
+    public abstract void delete(String path);
 }

@@ -19,11 +19,14 @@ import com.yxmall.platform.modules.system.service.SysUserRoleService;
 import com.yxmall.platform.modules.system.service.SysUserService;
 import com.yxmall.platform.modules.system.vo.UserVO;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -59,6 +62,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public UserVO getUserByUserName(String username) {
         UserVO user = baseMapper.selectUserByName(username);
+        user = this.setUserPermsList(user);
+        return user;
+    }
+
+
+    /**
+     * 设置用户权限
+     *
+     * @param user
+     * @return
+     */
+    protected UserVO setUserPermsList(UserVO user) {
         if (user != null) {
             Long userId = user.getUserId();
             Set<String> permsList;
@@ -74,6 +89,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return user;
     }
 
+
+    @Override
+    public UserVO getUserByUserMobile(String mobile) {
+        SysUser sysUser = this.getOne(new QueryWrapper<SysUser>().lambda().eq(SysUser::getMobile, mobile));
+        UserVO user = null;
+        user = this.setUserPermsList(user);
+        if (null != sysUser) {
+            user = new UserVO();
+            BeanUtils.copyProperties(sysUser, user);
+            user = this.setUserPermsList(user);
+            return user;
+        }
+        return user;
+    }
+
     @Override
     public void isEnable(SysUser sysUser) {
         baseMapper.updateById(sysUser);
@@ -82,8 +112,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     @Transactional(rollbackFor = {BaseException.class})
     public Result addUser(SysUser sysUser) {
-        //TODO 创建该用户的Id
-        sysUser.setCreateUserId(0L);
         sysUser.setCreateTime(new Date());
         //密码加密
         String encodePwd = passwordEncoder.encode(sysUser.getPassword());
@@ -92,7 +120,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         int flag = baseMapper.insert(sysUser);
         //更新或者添加用户角色
         sysUserRoleService.addOrUpdateUserRole(sysUser.getUserId(), sysUser.getRoleIds());
-        return Result.isAddSuccess(retBool(flag));
+        return Result.isSuccess(retBool(flag));
     }
 
     @Override
@@ -105,7 +133,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         int flag = baseMapper.updateById(sysUser);
         //更新或者添加用户角色
         sysUserRoleService.addOrUpdateUserRole(sysUser.getUserId(), sysUser.getRoleIds());
-        return Result.isEditSuccess(retBool(flag));
+        return Result.isSuccess(retBool(flag));
     }
 
     @Override
@@ -124,7 +152,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Boolean checkUserName(SysUser sysUser) {
         String username = sysUser.getUsername();
         UserVO userVO = baseMapper.selectUserByName(username);
-        if (sysUser.getUserId().equals(userVO.getUserId())) {
+        if (null == userVO || sysUser.getUserId().equals(userVO.getUserId())) {
             return true;
         }
         return false;
@@ -134,13 +162,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = BaseException.class)
     public Result deleteUserById(Long userId) {
         if (userId.equals(CommonConstant.SUPER_ADMIN_ID)) {
-            return  Result.error("超级管理员无法删除");
+            return Result.error("超级管理员无法删除");
         }
         //删除用户
         int flag = baseMapper.deleteById(userId);
         //删除用户角色关联
         sysUserRoleService.remove(new QueryWrapper<SysUserRole>().lambda().eq(SysUserRole::getUserId, userId));
-        return Result.isDelSuccess(retBool(flag));
+        return Result.isSuccess(retBool(flag));
     }
+
+    @Override
+    public Result updateCurrentUserInfo(SysUser sysUser) {
+        if (StringUtils.isBlank(sysUser.getPassword())) {
+            sysUser.setPassword(null);
+        }
+        //添加用户
+        int flag = baseMapper.updateById(sysUser);
+        return Result.isSuccess(retBool(flag));
+    }
+
 
 }

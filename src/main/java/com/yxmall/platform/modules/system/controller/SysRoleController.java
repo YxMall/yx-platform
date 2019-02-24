@@ -27,7 +27,7 @@ import java.util.Map;
  * @since 2018-09-27 10:14:05
  */
 @RestController
-@RequestMapping("role")
+@RequestMapping("/sys/role")
 @Api(value = "系统角色接口", description = "包含系统角色获取")
 public class SysRoleController extends AbstractController {
     /**
@@ -40,41 +40,41 @@ public class SysRoleController extends AbstractController {
     @GetMapping("/list")
     @ApiOperation(value = "获取角色", notes = "获取角色分页信息")
     public PageUtils getRoleListPage(@RequestParam Map<String, Object> params) {
-        //TODO 根据createUserID 只能查看自己创建的角色
+        params.put("userId", getCurrentUserId());
         return sysRoleService.getRoleListPage(params);
     }
 
     @GetMapping("/all")
     @ApiOperation(value = "获取全部角色", notes = "获取全部角色信息")
     public List<SysRole> getAllRole() {
-        //TODO 根据createUserID 只能查看自己创建的角色
         return sysRoleService.list(null);
     }
 
-    @DeleteMapping("/{id:\\d+}")
+    @DeleteMapping("/delete/{id:\\d+}")
     @ApiOperation(value = "删除角色", notes = "根据ID删除角色")
     public Result deleteRole(@PathVariable(name = "id") Long id) {
         return sysRoleService.deleteRoleById(id);
     }
 
-    @GetMapping("/{id:\\d+}")
+    @GetMapping("/get/{id:\\d+}")
     @ApiOperation(value = "角色信息", notes = "根据ID获取角色信息")
     public Result roleInfo(@PathVariable(name = "id") Long roleId) {
         return sysRoleService.getRoleInfo(roleId);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     @ApiOperation(value = "添加角色", notes = "添加角色信息")
     public Result addRole(@RequestBody SysRole sysRole) {
         ValidatorUtils.validateEntity(sysRole, AddGroup.class);
+        sysRole.setCreateUserId(getCurrentUserId());
         return sysRoleService.addRole(sysRole);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     @ApiOperation(value = "修改角色", notes = "修改角色信息")
     public Result updateRole(@RequestBody SysRole sysRole) {
         ValidatorUtils.validateEntity(sysRole, UpdateGroup.class);
-        return sysRoleService.addRole(sysRole);
+        return sysRoleService.updateRole(sysRole);
     }
 
 

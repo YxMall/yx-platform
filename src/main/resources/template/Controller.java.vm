@@ -1,0 +1,85 @@
+package ${package}.${moduleName}.controller;
+
+
+import com.baomidou.mybatisplus.extension.api.ApiController;
+import com.yxmall.platform.common.utils.PageUtils;
+import com.yxmall.platform.common.utils.Result;
+import com.yxmall.platform.common.validator.ValidatorUtils;
+import com.yxmall.platform.common.validator.group.AddGroup;
+import com.yxmall.platform.common.validator.group.UpdateGroup;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+
+import ${package}.${moduleName}.entity.${className};
+import ${package}.${moduleName}.service.${className}Service;
+
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@RestController
+@RequestMapping("/${moduleName}/${pathName}")
+public class ${className}Controller {
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/list")
+    @ApiOperation(value = "获取${comments}", notes = "获取${comments}分页信息")
+    public PageUtils get${className}ListPage(@RequestParam Map<String, Object> params) {
+        return ${classname}Service.get${className}ListPage(params);
+    }
+
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/get/{${pk.attrname}:\\d+}")
+    @ApiOperation(value = "${comments}信息", notes = "根据ID获取${comments}信息")
+    public Result info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
+        return Result.success(${classname}Service.getById(${pk.attrname}));
+    }
+
+    /**
+     * 保存
+     */
+    @PostMapping("/add")
+    @ApiOperation(value = "添加${comments}", notes = "添加${comments}信息")
+    public Result add${className}(@RequestBody ${className} ${classname}) {
+        return Result.isSuccess(${classname}Service.save(${classname}));
+    }
+
+    /**
+     * 修改
+     */
+    @PutMapping("/update")
+    @ApiOperation(value = "修改${comments}", notes = "修改${comments}信息")
+    public Result update${className}(@RequestBody ${className} ${classname}) {
+        return Result.isSuccess(${classname}Service.updateById(${classname}));
+    }
+
+
+    /**
+     * 删除
+     */
+    @DeleteMapping("/delete/{${pk.attrname}:\\d+}")
+    @ApiOperation(value = "删除${comments}", notes = "根据ID删除${comments}")
+    public Result delete${className}(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
+        return Result.isSuccess(${classname}Service.removeById(${pk.attrname}));
+    }
+
+
+}

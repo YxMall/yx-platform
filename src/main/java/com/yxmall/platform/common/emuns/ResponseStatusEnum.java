@@ -7,11 +7,10 @@ import org.apache.ibatis.javassist.runtime.Inner;
 
 /**
  * 响应状态码枚举类
- * author:smile
- * Date:2018/9/22
- * Time:下午10:37
+ * @author:smile
+ * @Date:2018/9/22
+ * @Time:下午10:37
  */
-
 @AllArgsConstructor
 @Getter
 public enum ResponseStatusEnum {

@@ -28,7 +28,7 @@ import java.util.List;
  * @since 2018-09-27 10:14:05
  */
 @RestController
-@RequestMapping("menu")
+@RequestMapping("/sys/menu")
 @Api(value = "系统菜单接口", description = "包含系统功能菜单获取")
 public class SysMenuController extends AbstractController {
 
@@ -42,32 +42,32 @@ public class SysMenuController extends AbstractController {
         return sysMenuService.getMenuTreeList();
     }
 
-    @DeleteMapping("/{id:\\d+}")
+    @DeleteMapping("/delete/{id:\\d+}")
     @ApiOperation(value = "删除菜单", notes = "根据ID删除菜单")
     private Result deleteMenu(@PathVariable(name = "id") Long id) {
         return sysMenuService.deleteMenuById(id);
     }
 
-    @GetMapping("/{id:\\d+}")
+    @GetMapping("/get/{id:\\d+}")
     @ApiOperation(value = "获取菜单信息", notes = "根据ID获取菜单信息")
     private SysMenu getMenuInfo(@PathVariable(name = "id") Long id) {
         return sysMenuService.getById(id);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     @ApiOperation(value = "修改菜单", notes = "根据ID修改菜单")
     private Result updateMenu(@RequestBody SysMenu sysMenu) {
         validateMenu(sysMenu);
         boolean flag = sysMenuService.updateById(sysMenu);
-        return Result.isEditSuccess(flag);
+        return Result.isSuccess(flag);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     @ApiOperation(value = "添加菜单", notes = "添加菜单")
     private Result addMenu(@RequestBody SysMenu sysMenu) {
         validateMenu(sysMenu);
         boolean flag = sysMenuService.save(sysMenu);
-        return Result.isAddSuccess(flag);
+        return Result.isSuccess(flag);
     }
 
 
@@ -75,7 +75,7 @@ public class SysMenuController extends AbstractController {
      * 验证菜单是否符合逻辑
      */
     private void validateMenu(SysMenu menu) {
-        if(StringUtils.isBlank(menu.getName())){
+        if(StringUtils.isBlank(menu.getTitle())){
             throw new BaseException("菜单名称不能为空");
         }
 

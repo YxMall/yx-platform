@@ -1,11 +1,9 @@
 package com.yxmall.platform.modules.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yxmall.platform.common.exception.BaseException;
 import com.yxmall.platform.common.utils.PageUtils;
 import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.modules.system.entity.SysRole;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;

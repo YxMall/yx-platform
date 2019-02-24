@@ -1,5 +1,6 @@
 package com.yxmall.platform.common.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.*;
@@ -16,13 +17,14 @@ import java.util.concurrent.TimeUnit;
  * Created by Dell on 23/09/2018.
  */
 @Component
+@Slf4j
 public class RedisUtils {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     /**
-     * 默认过期时长，单位：秒
+     * 默认过期时长，单位：秒 一天
      */
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24;
     /**
@@ -103,6 +105,45 @@ public class RedisUtils {
     }
 
     /**
+     * 根据key 获取过期时间
+     *
+     * @param key 键 不能为null
+     * @return 时间(秒) 返回0代表为永久有效
+     */
+    public long getExpire(String key) {
+        return redisTemplate.getExpire(key, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 递增
+     *
+     * @param key   键
+     * @param delta 要增加几(大于0)
+     * @return
+     */
+    public long incr(String key, long delta) {
+        if (delta < 0) {
+            throw new RuntimeException("递增因子必须大于0");
+        }
+        return redisTemplate.opsForValue().increment(key, delta);
+    }
+
+    /**
+     * 递减
+     *
+     * @param key   键
+     * @param delta 要减少几(小于0)
+     * @return
+     */
+    public long decr(String key, long delta) {
+        if (delta < 0) {
+            throw new RuntimeException("递减因子必须大于0");
+        }
+        return redisTemplate.opsForValue().increment(key, -delta);
+    }
+
+
+    /**
      * 读取缓存
      *
      * @param key
@@ -113,6 +154,27 @@ public class RedisUtils {
         ValueOperations<String, Object> operations = redisTemplate.opsForValue();
         result = operations.get(key);
         return result;
+    }
+
+
+    /**
+     * 读取缓存
+     *
+     * @param key
+     * @param clz
+     * @param <T>
+     * @return
+     */
+    public <T> T get(String key, Class<T> clz) {
+        Object result = null;
+        ValueOperations<String, Object> operations = redisTemplate.opsForValue();
+        result = operations.get(key);
+        if (clz.isInstance(result)) {
+            return clz.cast(result);
+        } else {
+            log.error("类型转换错误");
+        }
+        return null;
     }
 
     /**

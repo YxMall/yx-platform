@@ -2,11 +2,18 @@ package com.yxmall.platform.common.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,8 +45,13 @@ public class JsonUtils {
     /**
      * javaBean、列表数组转换为json字符串
      */
-    public static String objToJson(Object obj) throws Exception {
-        return objectMapper.writeValueAsString(obj);
+    public static String objToJson(Object obj) {
+        try {
+            return objectMapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -54,14 +66,19 @@ public class JsonUtils {
     /**
      * json 转对象
      */
-    public static <T> T jsonToObj(String jsonString, Class<T> clazz) throws Exception {
+    public static <T> T jsonToObj(String jsonString, Class<T> clazz) {
         //允许出现特殊字符和转义符
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
         //允许出现单引号
         objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
         //接受只有一个元素的数组的反序列化
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-        return objectMapper.readValue(jsonString, clazz);
+        try {
+            return objectMapper.readValue(jsonString, clazz);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -210,5 +227,6 @@ public class JsonUtils {
     public static <T> T objToObj(Object obj, Class<T> clazz) {
         return objectMapper.convertValue(obj, clazz);
     }
+
 
 }

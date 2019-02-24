@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yxmall.platform.modules.oa.mapper.NotifyMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.yxmall.platform.modules.oa.entity.Notify" id="notifyMap">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="status" column="status"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <select id="selectCurrentSendList" resultType="com.yxmall.platform.modules.oa.vo.NotifyVo">
+            SELECT  notify.*,user.username as create_username FROM oa_notify notify
+            LEFT JOIN sys_user user
+            ON(notify.create_user_id=user.user_id)
+            <where>
+                <if test="params.createUserId!=null and params.createUserId!=''and params.createUserId!=1">
+                   and  notify.create_user_id=#{params.createUserId}
+                </if>
+                <if test="params.title!=null and params.title!=''">
+                    and  notify.title  like  concat(concat("%",#{params.title}),"%")
+                </if>
+            </where>
+    </select>
+
+</mapper>

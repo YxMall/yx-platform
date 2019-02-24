@@ -2,10 +2,22 @@ spring:
   application:
     name: yxmall_platform
   profiles:
-    active: prod
+    active: dev
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+  mail:
+    default-encoding: utf-8
+    host: smtp.126.com
+    username: yx_mall@126.com
+    password: yxmall2018
+    port: 25
+    protocol: smtp
+
 server:
   port: 8088
 
@@ -40,11 +52,13 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     cache-enabled: false
 
+
 security:
   ignore:
     urls:
     - /code/*
-    - /druid/**
+    - /auth/login
+    - mobile/login
     - /swagger-ui.html
     - /swagger-resources/**
     - /swagger/**
@@ -53,4 +67,7 @@ security:
     - /**/*.css
     - /**/*.png
     - /**/*.ico
-    - /test
+    - /endpointChat/**
+    - /generator/**
+    - /test/**
+    - /sys/file/**

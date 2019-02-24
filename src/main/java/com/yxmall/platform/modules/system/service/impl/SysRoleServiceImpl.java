@@ -3,21 +3,19 @@ package com.yxmall.platform.modules.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yxmall.platform.common.constant.CommonConstant;
 import com.yxmall.platform.common.exception.BaseException;
 import com.yxmall.platform.common.utils.PageUtils;
 import com.yxmall.platform.common.utils.Query;
 import com.yxmall.platform.common.utils.Result;
 import com.yxmall.platform.modules.system.entity.SysRoleMenu;
-import com.yxmall.platform.modules.system.entity.SysUser;
 import com.yxmall.platform.modules.system.entity.SysUserRole;
 import com.yxmall.platform.modules.system.mapper.SysRoleMapper;
 import com.yxmall.platform.modules.system.entity.SysRole;
-import com.yxmall.platform.modules.system.service.SysMenuService;
 import com.yxmall.platform.modules.system.service.SysRoleMenuService;
 import com.yxmall.platform.modules.system.service.SysRoleService;
 import com.yxmall.platform.modules.system.service.SysUserRoleService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,9 +48,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public PageUtils getRoleListPage(Map<String, Object> params) {
         String roleName = (String) params.get("roleName");
+        Long userId = (Long) params.get("userId");
         IPage<SysRole> page = baseMapper.selectPage(
                 new Query<SysRole>(params).getPage(),
                 new QueryWrapper<SysRole>().lambda().like(SysRole::getRoleName, roleName)
+                        .eq(!userId.equals(CommonConstant.SUPER_ADMIN_ID), SysRole::getCreateUserId, userId)
+                        .orderBy(true, true, SysRole::getCreateTime)
         );
         return new PageUtils(page);
     }
@@ -69,20 +70,18 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         sysRoleMenuService.remove(new QueryWrapper<SysRoleMenu>().lambda().eq(SysRoleMenu::getRoleId, roleId));
         //删除角色
         int flag = baseMapper.deleteById(roleId);
-        return Result.isDelSuccess(flag > 0);
+        return Result.isSuccess(retBool(flag));
     }
 
     @Override
     @Transactional(rollbackFor = BaseException.class)
     public Result addRole(SysRole sysRole) {
         //保存角色
-        //TODO  添加创建该用户的ID
-        sysRole.setCreateUserId(0L);
         sysRole.setCreateTime(new Date());
         int flag = baseMapper.insert(sysRole);
         //添加角色和菜单关系
         sysRoleMenuService.addOrUpdate(sysRole.getRoleId(), sysRole.getMenuIds());
-        return Result.isAddSuccess(true);
+        return Result.isSuccess(true);
     }
 
     @Override
@@ -92,7 +91,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         int flag = baseMapper.updateById(sysRole);
         //添加角色和菜单关系
         sysRoleMenuService.addOrUpdate(sysRole.getRoleId(), sysRole.getMenuIds());
-        return Result.isAddSuccess(retBool(flag));
+        return Result.isSuccess(retBool(flag));
     }
 
 

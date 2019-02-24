@@ -22,9 +22,15 @@ public class OssStorageConfig {
 
 
     /**
-     * oss地址 阿里云：endpoint  腾讯云：Region
+     * 阿里云：endpoint
      */
     private String endpoint;
+
+
+    /**
+     * 腾讯云：Region 区域
+     */
+    private String region;
 
     /**
      * accessKeyId

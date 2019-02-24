@@ -1,7 +1,8 @@
 package com.yxmall.platform.common.xss;
 
+import lombok.Getter;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 
 /**
  * XSS过滤处理
+ *
  * @author chenshun
  * @email sunlightcs@gmail.com
  * @date 2017-04-01 11:29
@@ -26,28 +28,30 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     //html过滤
     private final static HTMLFilter htmlFilter = new HTMLFilter();
 
-    public XssHttpServletRequestWrapper(HttpServletRequest request) {
+    /**
+     * 保存内容
+     */
+    private String body;
+
+    private ServletInputStream inputStream;
+
+    public XssHttpServletRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
         orgRequest = request;
-    }
-
-    @Override
-    public ServletInputStream getInputStream() throws IOException {
         //非json类型，直接返回
-        if(!MediaType.APPLICATION_JSON_VALUE.equalsIgnoreCase(super.getHeader(HttpHeaders.CONTENT_TYPE))){
-            return super.getInputStream();
+        if (!MediaType.APPLICATION_JSON_VALUE.equalsIgnoreCase(super.getHeader(HttpHeaders.CONTENT_TYPE))) {
+            this.inputStream = super.getInputStream();
         }
-
+        //保存流
+        body = IOUtils.toString(super.getInputStream(), "utf-8");
         //为空，直接返回
-        String json = IOUtils.toString(super.getInputStream(), "utf-8");
-        if (StringUtils.isBlank(json)) {
-            return super.getInputStream();
+        if (StringUtils.isBlank(body)) {
+            this.inputStream = super.getInputStream();
         }
-
         //xss过滤
-        json = xssEncode(json);
-        final ByteArrayInputStream bis = new ByteArrayInputStream(json.getBytes("utf-8"));
-        return new ServletInputStream() {
+        body = xssEncode(body);
+        ByteArrayInputStream bis = new ByteArrayInputStream(body.getBytes("utf-8"));
+        inputStream = new ServletInputStream() {
             @Override
             public boolean isFinished() {
                 return true;
@@ -68,6 +72,14 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
                 return bis.read();
             }
         };
+    }
+
+    @Override
+    public ServletInputStream getInputStream() throws IOException {
+        if (inputStream != null) {
+            return inputStream;
+        }
+        return super.getInputStream();
     }
 
     @Override
@@ -93,9 +105,9 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     }
 
     @Override
-    public Map<String,String[]> getParameterMap() {
-        Map<String,String[]> map = new LinkedHashMap<>();
-        Map<String,String[]> parameters = super.getParameterMap();
+    public Map<String, String[]> getParameterMap() {
+        Map<String, String[]> map = new LinkedHashMap<>();
+        Map<String, String[]> parameters = super.getParameterMap();
         for (String key : parameters.keySet()) {
             String[] values = parameters.get(key);
             for (int i = 0; i < values.length; i++) {
@@ -137,4 +149,8 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         return request;
     }
 
+
+    public String getBody() {
+        return body;
+    }
 }

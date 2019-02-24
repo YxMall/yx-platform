@@ -82,7 +82,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             return Result.error("请先取消使用该权限的角色权限");
         }
         int i = baseMapper.deleteById(id);
-        return Result.isDelSuccess(i > 0);
+        return Result.isSuccess(retBool(i));
     }
 
 
