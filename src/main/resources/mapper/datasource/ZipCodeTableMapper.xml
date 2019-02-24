@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxmall.platform.modules.system.mapper.ZipCodeTableMapper">
+  <sql id="zipCodeTable">-->
+       stateCode,lowestZip,highestZip
+  </sql>
+    <select id="select" resultType="com.yxmall.platform.modules.system.entity.ZipCodeTable">
+        select <include refid="zipCodeTable"/> from zipCodeTable
+    </select>
+
+</mapper>
