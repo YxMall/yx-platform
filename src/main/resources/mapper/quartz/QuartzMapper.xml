@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yxmall.platform.modules.system.mapper.QuartzMapper">
+ <sql id="trigger">
+TRIGGER_NAME,TRIGGER_GROUP
+ </sql>
+    <insert id="addJob" parameterType="com.yxmall.platform.modules.system.entity.Qrtz_Job_Details" >
+       insert into qrtz_job_details(SCHED_NAME,JOB_NAME,JOB_GROUP,DESCRIPTION,JOB_CLASS_NAME) VALUES(#{schedName},#{jobName},#{jobGroup},#{description},#{jobClassName})
+    </insert>
+    <insert id="addCron" parameterType="com.yxmall.platform.modules.system.entity.Qrtz_Cron_Triggers" >
+        insert into qrtz_cron_triggers(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP,CRON_EXPRESSION,TIME_ZONE_ID) VALUES(#{schedName},#{triggerName},#{triggerGroup},#{cronExpression},#{TimeZoneId})
+    </insert>
+    <insert id="addTriggers" parameterType="com.yxmall.platform.modules.system.entity.Qrtz_Triggers" >
+        insert into qrtz_triggers(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP,
+        JOB_NAME,JOB_GROUP,NEXT_FIRE_TIME,PREV_FIRE_TIME,
+        PRIORITY,TRIGGER_STATE,TRIGGER_TYPE,START_TIME) VALUES(
+          #{schedName},#{triggerName},#{triggerGroup},#{jobName},#{jobGroup},
+          #{nextFireTime},#{prevFireTime},#{priority},
+          #{triggerState},#{triggerType},#{startTime}
+        )
+    </insert>
+    <insert id="addFiredTriggers" parameterType="com.yxmall.platform.modules.system.entity.Qrtz_Fired_Triggers" >
+        insert into qrtz_fired_triggers(SCHED_NAME,ENTRY_ID,TRIGGER_NAME,TRIGGER_GROUP,INSTANCE_NAME,FIRED_TIME,SCHED_TIME,
+        PRIORITY,STATE,JOB_NAME,JOB_GROUP) VALUES(#{schedName},#{entryId},#{triggerName},#{triggerGroup},#{instanceName},#{firedTime},#{schedTime},
+        #{priority},#{state},#{jobName},#{jobGroup})
+    </insert>
+    <select id="selectTriggers" resultType="com.yxmall.platform.modules.system.entity.Qrtz_Triggers"  parameterType="com.yxmall.platform.modules.system.entity.Qrtz_Cron_Triggers">
+  select <include refid="trigger"/> from qrtz_triggers
+  <where>
+      JOB_NAME=#{jobName} and JOB_GROUP=#{jobGroup}
+  </where>
+    </select>
+    <update id="updateCron" parameterType="com.yxmall.platform.modules.system.entity.Qrtz_Cron_Triggers">
+        update qrtz_cron_triggers set CRON_EXPRESSION=#{cronExpression}
+        <where>
+            TRIGGER_NAME=#{triggerName} and TRIGGER_GROUP=#{triggerGroup}
+        </where>
+    </update>
+    <update id="updateTriggers" parameterType="com.yxmall.platform.modules.system.entity.Qrtz_Triggers">
+        update qrtz_triggers set NEXT_FIRE_TIME=#{nextFireTime},START_TIME=#{startTime}
+        <where>
+            JOB_NAME=#{jobName} and JOB_GROUP=#{jobGroup}
+        </where>
+    </update>
+    <delete id="deleteCron" parameterType="com.yxmall.platform.modules.system.entity.Qrtz_Cron_Triggers" >
+  delete from qrtz_cron_triggers
+  <where>
+      TRIGGER_NAME=#{triggerName} and TRIGGER_GROUP=#{triggerGroup}
+  </where>
+    </delete>
+    <delete id="deleteTriggers" parameterType="com.yxmall.platform.modules.system.entity.Qrtz_Triggers" >
+        delete from qrtz_triggers
+        <where>
+            TRIGGER_NAME=#{triggerName} and TRIGGER_GROUP=#{triggerGroup}
+        </where>
+    </delete>
+
+    <delete id="deleteJob" parameterType="com.yxmall.platform.modules.system.entity.Qrtz_Job_Details" >
+        delete from qrtz_job_details
+        <where>
+            JOB_NAME=#{jobName} and JOB_GROUP=#{jobGroup}
+        </where>
+    </delete>
+    <delete id="deleteFiredTriggers" parameterType="com.yxmall.platform.modules.system.entity.Qrtz_Fired_Triggers" >
+        delete from qrtz_fired_triggers
+        <where>
+            JOB_NAME=#{jobName} and JOB_GROUP=#{jobGroup}
+        </where>
+    </delete>
+</mapper>
